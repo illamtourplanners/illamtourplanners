@@ -41,7 +41,7 @@ export const Header = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a 
-              href="#" 
+              href="/About" 
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300 relative group"
             >
               About Us
