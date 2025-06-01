@@ -7,9 +7,9 @@ const images = [
     description: "Explore the serene waterways of Alleppey"
   },
   {
-    url: 'https://viacation.com/wp-content/uploads/2024/12/Kerala.webp',
-    title: "Kerala Beaches",
-    description: "Relax on pristine beaches of Kovalam"
+    url: 'https://media.holidify.com/images/cmsuploads/compressed/waynadu-1024x768_20241008180836.jpg',
+    title: "Wayanad",
+    description: "Beauty of wayand"
   },
   {
     url: 'https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2FKerala%20State.JPG&w=1080&q=75',
