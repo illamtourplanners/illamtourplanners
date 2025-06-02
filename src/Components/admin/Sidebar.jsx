@@ -1,40 +1,90 @@
 import React, { useState } from 'react';
-import { Home, Users, Settings } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Home, Users, Settings, Package, BookOpen, Mail } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
-   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path) => {
+    return location.pathname === `/admin${path}`;
+  };
+
   return (
     <>
-    <button
+      {/* Mobile Toggle Button */}
+      <button
         className="lg:hidden p-4 text-white bg-gray-800 fixed z-50"
         onClick={() => setIsOpen(!isOpen)}
-      ></button>
-   
-    <div className="w-20 h-screen bg-gray-800 text-white fixed">
-      <div className="text- font-bold p-6 border-b border-gray-700">Admin Panel</div>
-      <ul className="flex flex-col gap-2 p-4">
-        <li>
-          <Link to="/" className="flex items-center gap-3 p-3 rounded hover:bg-gray-700">
-            <Home className="w-5 h-5" />
-            {/* Dashboard */}
-          </Link>
-        </li>
-        <li>
-          <Link to="/users" className="flex items-center gap-3 p-3 rounded hover:bg-gray-700">
-            <Users className="w-5 h-5" />
-            {/* Users */}
-          </Link>
-        </li>
-        <li>
-          <Link to="/settings" className="flex items-center gap-3 p-3 rounded hover:bg-gray-700">
-            <Settings className="w-5 h-5" />
-            {/* Settings */}
-          </Link>
-        </li>
-      </ul>
-    </div>
-     </>
+      >
+        {isOpen ? '✕' : '☰'}
+      </button>
+
+      {/* Sidebar */}
+      <div
+        className={`${isOpen ? 'block' : 'hidden'} lg:block w-16 lg:w-16 h-screen bg-gray-800 text-white fixed z-40 transition-all duration-300`}
+      >
+        <div className="text-center py-6 text-sm font-bold border-b border-gray-700">
+          A
+        </div>
+        <ul className="flex flex-col items-center gap-4 py-6">
+          <li>
+            <Link
+              to="/admin/home"
+              className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/home') ? 'bg-gray-700' : ''}`}
+            >
+              <Home className="w-5 h-5" />
+              <span className="text-[10px] hidden group-hover:block">Home</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/admin/users"
+              className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/users') ? 'bg-gray-700' : ''}`}
+            >
+              <Users className="w-5 h-5" />
+              <span className="text-[10px] hidden group-hover:block">Users</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/admin/package"
+              className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/package') ? 'bg-gray-700' : ''}`}
+            >
+              <Package className="w-5 h-5" />
+              <span className="text-[10px] hidden group-hover:block">Packages</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/admin/bookings"
+              className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/bookings') ? 'bg-gray-700' : ''}`}
+            >
+              <BookOpen className="w-5 h-5" />
+              <span className="text-[10px] hidden group-hover:block">Bookings</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/admin/contact"
+              className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/contact') ? 'bg-gray-700' : ''}`}
+            >
+              <Mail className="w-5 h-5" />
+              <span className="text-[10px] hidden group-hover:block">Contact</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/admin/settings"
+              className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/settings') ? 'bg-gray-700' : ''}`}
+            >
+              <Settings className="w-5 h-5" />
+              <span className="text-[10px] hidden group-hover:block">Settings</span>
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </>
   );
 };
 

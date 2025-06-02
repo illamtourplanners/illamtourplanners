@@ -7,7 +7,6 @@ const navigationLinks = [
   { name: 'Packages', path: '/packages' },
   { name: 'About Us', path: '/about' },
   { name: 'Contact', path: '/contact' },
-  
 ];
 
 export const Header = () => {
@@ -27,9 +26,9 @@ export const Header = () => {
               height="40"
               loading="lazy"
             />
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">
-              Illam Tour Planners
-            </span>
+            <span className="text-2xl font-bold text-white drop-shadow-lg">
+  Illam Tour Planners
+</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -39,15 +38,15 @@ export const Header = () => {
                 key={link.path}
                 to={link.path}
                 exact={link.exact}
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-300 relative group"
-                activeClassName="text-blue-600"
+                className="text-white hover:text-blue-200 font-medium transition-colors duration-300 relative group"
+                activeClassName="text-blue-300"
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full group-[.active]:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-300 transition-all duration-300 group-hover:w-full group-[.active]:w-full"></span>
               </NavLink>
             ))}
             
-            <button className="ml-4 px-6 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+            <button className="ml-4 px-6 py-2 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-white/20">
               Book Now
             </button>
           </nav>
@@ -56,7 +55,7 @@ export const Header = () => {
           <div className="md:hidden flex items-center">
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-gray-500 hover:text-gray-600 focus:outline-none"
+              className="p-2 text-white hover:text-blue-200 focus:outline-none"
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
             >
@@ -75,21 +74,21 @@ export const Header = () => {
 
         {/* Mobile Menu Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-16 inset-x-0 bg-white shadow-lg">
+          <div className="md:hidden absolute top-16 inset-x-0 bg-white/90 backdrop-blur-sm shadow-lg">
             <div className="pt-2 pb-4 space-y-2">
               {navigationLinks.map((link) => (
                 <NavLink
                   key={link.path}
                   to={link.path}
                   exact={link.exact}
-                  className="block px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors"
-                  activeClassName="bg-gray-100 text-blue-600"
+                  className="block px-4 py-3 text-gray-800 hover:bg-white/20 transition-colors"
+                  activeClassName="bg-white/30 text-blue-600"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.name}
                 </NavLink>
               ))}
-              <button className="w-full mx-4 px-6 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+              <button className="w-full mx-4 px-6 py-2 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 mt-2">
                 Book Now
               </button>
             </div>

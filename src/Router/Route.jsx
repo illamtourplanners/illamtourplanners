@@ -14,6 +14,7 @@ import CreatePackageForm from '../Pages/admin/Package'
 import Bookings from '../Pages/admin/Bookings'
 import ContactInfo from '../Pages/admin/ContactInfo'
 import ContactInfoAdmin from '../Pages/admin/ContactInfo'
+import { AdminLogin } from '../Pages/admin/AdminLogin'
 
 export const router=createBrowserRouter([
  {
@@ -51,6 +52,10 @@ export const router=createBrowserRouter([
         path: "/admin",
         element:<AdminLayout/>,
         children:[
+              {
+                path: "login",
+                element: <AdminLogin/>
+            },
             {
                 path: "home",
                 element: <AdminHomePage/>
