@@ -15,6 +15,7 @@ import Bookings from '../Pages/admin/Bookings'
 import ContactInfo from '../Pages/admin/ContactInfo'
 import ContactInfoAdmin from '../Pages/admin/ContactInfo'
 import { AdminLogin } from '../Pages/admin/AdminLogin'
+import AllBookings from '../Pages/admin/AllBookings'
 
 export const router=createBrowserRouter([
  {
@@ -67,7 +68,11 @@ export const router=createBrowserRouter([
              {
                 path: "bookings",
                 element: < Bookings/>
-            },  
+            }, 
+            {
+                path: "allBookings",
+                element: < AllBookings/>
+            },   
             {
                 path: "contact",
                 element: < ContactInfoAdmin/>
