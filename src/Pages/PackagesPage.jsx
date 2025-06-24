@@ -1,33 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GiJourney } from 'react-icons/gi';
+import { axiosInstance } from '../config/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 export const PackagesPage = () => {
-  const packages = [
-    {
-      id: 1,
-      title: 'Backwaters of Kerala',
-      image: 'https://images.unsplash.com/photo-1548013146-72479768bada',
-      video: 'https://www.youtube.com/embed/7peOHGR1BcU', // Sample Kerala backwaters video
-      description: 'Enjoy a serene houseboat ride through the lush green backwaters. Our package includes 2 nights in traditional houseboats, authentic Kerala meals, and guided village tours. Experience the tranquility of palm-fringed canals and witness local life along the waters.',
-      price: '₹12,500',
-    },
-    {
-      id: 2,
-      title: 'Munnar Tea Hills',
-      image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90',
-      video: 'https://www.youtube.com/embed/6W9P1aYQqYw', // Sample Munnar video
-      description: 'Explore rolling tea gardens, misty hills, and cool weather. This 3-day package includes visits to tea factories, trekking to Anamudi peak, and stays in colonial-style bungalows. Enjoy panoramic views and learn about tea processing from leaf to cup.',
-      price: '₹9,800',
-    },
-    {
-      id: 3,
-      title: 'Alleppey Beach Retreat',
-      image: 'https://images.unsplash.com/photo-1570734269385-b4d1a9c9b28a',
-      video: 'https://www.youtube.com/embed/1QH4JlyP_3Y', // Sample Alleppey video
-      description: 'Relax by golden beaches and experience traditional Kerala culture. Our beachfront resort package includes Ayurvedic spa treatments, Kathakali dance performances, sunset cruises, and authentic seafood dinners by the Arabian Sea.',
-      price: '₹11,200',
-    },
-  ];
+  const [packag,setPackages]=useState([])
+const [loading, setLoading] = useState(true);
+ const navigate=useNavigate()
+useEffect(() => {
+  const fetchPackages = async () => {
+    try {
+      const response = await axiosInstance.get("/package/getall");
+      setPackages(response.data.data);
+      console.log(response.data.data);
+      
+    } catch (error) {
+      console.error("Failed to fetch packages:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchPackages();
+}, []);
+
+const redirect=(id)=>{
+  navigate(`/checkout/${id}`)
+}
+
 
   return (
     <div className="bg-white dark:bg-gray-900 min-h-screen">
@@ -51,8 +50,8 @@ export const PackagesPage = () => {
           Featured Packages
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {packages.map((pkg) => (
-            <div key={pkg.id} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300">
+          {packag.map((pkg) => (
+            <div key={pkg.id} onClick={() => redirect(pkg._id)} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300">
               <img src={pkg.image} alt={pkg.title} className="h-56 w-full object-cover" />
               <div className="p-4">
                 <div className="aspect-w-16 aspect-h-9">
