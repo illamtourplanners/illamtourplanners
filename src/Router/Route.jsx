@@ -17,6 +17,8 @@ import ContactInfoAdmin from '../Pages/admin/ContactInfo'
 import { AdminLogin } from '../Pages/admin/AdminLogin'
 import AllBookings from '../Pages/admin/AllBookings'
 import { PackagesPage } from '../Pages/PackagesPage'
+import AddressPage from '../Pages/AddressPage'
+import ConformationPage from '../Pages/ConformationPage'
 
 
 export const router=createBrowserRouter([
@@ -41,11 +43,18 @@ export const router=createBrowserRouter([
                              path: "checkout/:id",
                              element: <CheckoutPage/>
                          },
+                          {
+                             path: "address/:id",
+                             element: <AddressPage/>
+                         },
                          {
                              path: "package",
                              element: <PackagesPage/>
                          },  
-
+ {
+                             path: "confirm",
+                             element: <ConformationPage/>
+                         }, 
 
 
            

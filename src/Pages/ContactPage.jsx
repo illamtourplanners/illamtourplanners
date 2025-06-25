@@ -29,8 +29,10 @@ export const ContactPage = () => {
   };
 
   return (
-    <div >
-   <section className="relative bg-gradient-to-r from-amber-500 to-amber-700 dark:from-amber-600 dark:to-amber-800 py-24 md:py-32 text-center text-white overflow-hidden">
+    <div  className='dark:bg-gray-900 text-gray-800'>
+ <section
+  className="relative bg-[url('https://themewagon.github.io/pacific/images/bg_1.jpg')] bg-cover bg-center py-24 text-center opacity-75 text-white overflow-hidden"
+>
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.travelandleisure.com/thmb/3xJDPQxG1W8Q0w6TZ-6I7jXzQoA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/kerala-backwaters-KERALAOUT0218-1a9b5a8a7e2c4a7d9e3b5c5e5e5e5e5e.jpg')] bg-cover bg-center"></div>
         <div className="relative z-10 px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
