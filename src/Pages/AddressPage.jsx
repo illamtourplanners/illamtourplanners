@@ -4,6 +4,7 @@ import { AiOutlinePlus, AiOutlineUser } from "react-icons/ai";
 import { FiChevronRight } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
+import { GiJourney } from 'react-icons/gi';
 
 const AddressPage = () => {
   const { id } = useParams();
@@ -120,7 +121,38 @@ const AddressPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6">
+    <div>
+      <section className="relative bg-[url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center py-32 text-center overflow-hidden">
+  <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/70 to-teal-800/70"></div>
+  <div className="relative z-10 px-4">
+    <motion.h1 
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white"
+    >
+      Your South Indian Adventure Awaits
+    </motion.h1>
+    <motion.p 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.3, duration: 0.8 }}
+      className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-teal-100"
+    >
+      Experience authentic Kerala with our handcrafted tours and personalized service
+    </motion.p>
+    <motion.div 
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ delay: 0.6, type: 'spring' }}
+      className="mt-12"
+    >
+      <GiJourney className="inline-block text-5xl text-emerald-300 animate-float" />
+    </motion.div>
+  </div>
+</section>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 mt-10">
+      
       <div className="max-w-5xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
@@ -262,6 +294,7 @@ const AddressPage = () => {
                         </div>
                       )}
 
+
                       {/* Email (only primary) */}
                       {index === 0 && (
                         <div>
@@ -317,6 +350,7 @@ const AddressPage = () => {
   <label className="block text-sm font-medium text-gray-700 mb-1">
     Age
   </label>
+  
   <input
     type="number"
     min="0"
@@ -435,6 +469,7 @@ const AddressPage = () => {
           </div>
         </motion.div>
       </div>
+    </div>
     </div>
   );
 };
