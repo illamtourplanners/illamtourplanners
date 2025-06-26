@@ -15,11 +15,12 @@ import Bookings from '../Pages/admin/Bookings'
 import ContactInfo from '../Pages/admin/ContactInfo'
 import ContactInfoAdmin from '../Pages/admin/ContactInfo'
 import { AdminLogin } from '../Pages/admin/AdminLogin'
-import AllBookings from '../Pages/admin/AllBookings'
+
 import { PackagesPage } from '../Pages/PackagesPage'
 import AddressPage from '../Pages/AddressPage'
 import ConformationPage from '../Pages/ConformationPage'
 import AdminBookingPackages from '../Pages/admin/AdminBookingPackages'
+import AdminBookingDetails from '../Pages/admin/AdminBookingDetails'
 
 
 export const router=createBrowserRouter([
@@ -78,12 +79,12 @@ export const router=createBrowserRouter([
                 element: < CreatePackageForm/>
             },
              {
-                path: "bookings",
+                path: "bookings/:id",
                 element: < Bookings/>
             }, 
             {
-                path: "allBookings",
-                element: < AllBookings/>
+                path: "booking/:id",
+                element: < AdminBookingDetails/>
             },  
               {
                 path: "allPackages",

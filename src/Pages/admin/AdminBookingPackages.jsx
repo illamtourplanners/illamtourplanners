@@ -1,57 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { axiosInstance } from '../../config/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 const AdminBookingPackages = () => {
-  // Mock package data
-  const packages = [
-    {
-      id: 1,
-      name: 'React Router',
-      description: 'Declarative routing for React',
-      version: '6.18.0',
-      downloads: '25M/month',
-      author: 'React Team'
-    },
-    {
-      id: 2,
-      name: 'Tailwind CSS',
-      description: 'Utility-first CSS framework',
-      version: '3.3.0',
-      downloads: '15M/month',
-      author: 'Adam Wathan'
-    },
-    {
-      id: 3,
-      name: 'Axios',
-      description: 'Promise based HTTP client',
-      version: '1.4.0',
-      downloads: '35M/month',
-      author: 'Matt Zabriskie'
-    },
-    {
-      id: 4,
-      name: 'Redux',
-      description: 'Predictable state container',
-      version: '4.2.1',
-      downloads: '20M/month',
-      author: 'Dan Abramov'
-    },
-    {
-      id: 5,
-      name: 'Vite',
-      description: 'Next generation frontend tooling',
-      version: '4.4.0',
-      downloads: '18M/month',
-      author: 'Evan You'
-    },
-    {
-      id: 6,
-      name: 'Zustand',
-      description: 'Bear necessities for state management',
-      version: '4.4.0',
-      downloads: '5M/month',
-      author: 'Jotai'
-    }
-  ];
+  const [packages, setPackages] = useState([]);
+const navigate=useNavigate()
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const response = await axiosInstance.get('/package/getall');
+        if (response.data.success) {
+          setPackages(response.data.data); // Assuming your data is in data.data
+          console.log(response.data.data);
+          
+        }
+      } catch (error) {
+        console.error('Error fetching packages:', error);
+      }
+    };
+
+    fetchPackages();
+  }, []);
+
+
+   const nav = (id) => {
+    navigate(`/admin/bookings/${id}`);
+   }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -93,44 +67,35 @@ const AdminBookingPackages = () => {
         </div>
 
         {/* Packages Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {packages.map((pkg) => (
-            <div key={pkg.id} className="bg-white overflow-hidden shadow rounded-lg hover:shadow-xl transition duration-300">
-              <div className="p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 bg-blue-500 rounded-md p-3">
-                    <div className="text-white font-bold text-lg">
-                      {pkg.name.charAt(0)}
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-bold text-gray-900">{pkg.name}</h3>
-                    <p className="text-sm text-gray-500">v{pkg.version}</p>
-                  </div>
-                </div>
-                
-                <p className="mt-4 text-gray-600">{pkg.description}</p>
-                
-                <div className="mt-6 flex justify-between items-center">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{pkg.downloads}</p>
-                    <p className="text-sm text-gray-500">Downloads</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-right font-medium text-gray-900">{pkg.author}</p>
-                    <p className="text-sm text-right text-gray-500">Author</p>
-                  </div>
-                </div>
-                
-                <div className="mt-6">
-                  <button className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Install Package
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+  {packages.map((pkg) => (
+    <div key={pkg._id} className="bg-white overflow-hidden shadow rounded-lg hover:shadow-xl transition duration-300">
+      <img src={pkg.image} alt={pkg.packageName} className="w-full h-48 object-cover" />
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-900">{pkg.packageName}</h3>
+        <p className="text-sm text-gray-500 mb-2">Date: {new Date(pkg.date).toLocaleDateString()}</p>
+        <p className="text-gray-600 line-clamp-3">{pkg.description}</p>
+        
+        <div className="mt-4">
+          <p className="text-sm font-medium text-gray-900">Price per person: ₹{pkg.PricePerPerson}</p>
+          <p className="text-sm text-gray-500">Advance: ₹{pkg.advancePrice}</p>
         </div>
+        
+        <div className="mt-4 text-sm text-gray-500">
+          Pickup Points: {pkg.pickupPoints.join(', ')}
+        </div>
+        
+        <button
+        onClick={() => nav(pkg.pkgNumber)}
+
+         className="mt-4 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+          View Details
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
+
 
         {/* Pagination */}
         <div className="mt-12 flex justify-center">

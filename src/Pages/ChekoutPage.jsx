@@ -15,11 +15,13 @@ const CheckoutPage = () => {
   const [invoiceNo] = useState(`INV-${Math.floor(Math.random() * 1000000)}`);
   const [isCopied, setIsCopied] = useState(false);
 const [previewImage, setPreviewImage] = useState(null);
-console.log(packageDetails);
+console.log(amount);
 
 
   const totalAmount = Math.max(0, advancePayment - discount);
-  const upiLink = `upi://pay?pa=sajuputhukkudi@oksbi&pn=BRIGHTBYTE&mc=0000&tid=${invoiceNo}&tr=${invoiceNo}&tn=Package Booking Payment&am=${totalAmount}&cu=INR`;
+ const upiLink = `upi://pay?pa=keshavanpatteri2000-1@oksbi&pn=Vaidehi Holidays&am=${totalAmount}&cu=INR&tn=Advance Booking Payment
+`;
+
 
   const {
     register,
@@ -74,6 +76,7 @@ const onFormSubmit = async (data) => {
     formData.append("customers", JSON.stringify(formattedCustomers));
     formData.append("amount", totalAmount);
     formData.append("name", name);
+    formData.append("totalPerPerson", amount);
     formData.append("advancePayment", advancePayment);
 
     const res = await axiosInstance.post("/checkout/create", formData, {

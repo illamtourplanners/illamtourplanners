@@ -57,7 +57,7 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/admin/bookings"
+              to="/admin/allPackages"
               className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/bookings') ? 'bg-gray-700' : ''}`}
             >
               <BookOpen className="w-5 h-5" />
