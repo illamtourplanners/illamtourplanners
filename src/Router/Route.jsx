@@ -19,6 +19,7 @@ import AllBookings from '../Pages/admin/AllBookings'
 import { PackagesPage } from '../Pages/PackagesPage'
 import AddressPage from '../Pages/AddressPage'
 import ConformationPage from '../Pages/ConformationPage'
+import AdminBookingPackages from '../Pages/admin/AdminBookingPackages'
 
 
 export const router=createBrowserRouter([
@@ -83,7 +84,12 @@ export const router=createBrowserRouter([
             {
                 path: "allBookings",
                 element: < AllBookings/>
-            },   
+            },  
+              {
+                path: "allPackages",
+                element: <  AdminBookingPackages/>
+            }, 
+           
             {
                 path: "contact",
                 element: < ContactInfoAdmin/>

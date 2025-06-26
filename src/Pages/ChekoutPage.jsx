@@ -54,6 +54,7 @@ const onFormSubmit = async (data) => {
     }));
 
     const formattedDetails = {
+      packageNumber:packageDetails.packageNumber,
       packageName: packageDetails.packageName,
       packageDate: packageDetails.date,
       packageDay: packageDetails.day,

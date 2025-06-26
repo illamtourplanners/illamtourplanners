@@ -95,6 +95,7 @@ const AddressPage = () => {
 
   const packageDetails = packages
     ? {
+      packageNumber:packages.pkgNumber,
         packageName: packages.PackageName,
         destination: packages.dropoff,
         day:packages.day,
