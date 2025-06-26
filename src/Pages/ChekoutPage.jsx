@@ -5,7 +5,7 @@ import { FiChevronLeft, FiCopy } from "react-icons/fi";
 import { useNavigate, useLocation, redirect } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
 import { useForm } from "react-hook-form";
-
+import { GiJourney } from 'react-icons/gi';
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,7 +99,46 @@ const onFormSubmit = async (data) => {
 
 
   return (
+    <div>
+   <section className="relative bg-[url('https://www.baltana.com/files/wallpapers-23/Beach-Resort-Wallpaper-1600x1000-56185.jpg')] bg-cover bg-center py-32 text-center overflow-hidden"> <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/70 to-teal-800/70"></div>
+  <div className="relative z-10 px-4">
+    <motion.h1 
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white"
+    >
+      Secure Your Kerala Getaway
+    </motion.h1>
+    <motion.p 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.3, duration: 0.8 }}
+      className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-teal-100"
+    >
+      Complete your booking in just a few steps and prepare for an unforgettable journey
+    </motion.p>
+    <motion.div 
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ delay: 0.6, type: 'spring' }}
+      className="mt-12"
+    >
+      <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg transform transition-all hover:scale-105">
+        Complete Your Booking Now
+      </button>
+    </motion.div>
+  </div>
+</section>
+
+
+
+
+
+
+
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 mt-10">
+   
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -310,6 +349,7 @@ const onFormSubmit = async (data) => {
           </div>
         </motion.div>
       </div>
+    </div>
     </div>
   );
 };

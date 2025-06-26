@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const navigationLinks = [
   { name: 'Home', path: '/', exact: true },
-  { name: 'Tours', path: '/tours' },
+  // { name: 'Tours', path: '/tours' },
   { name: 'Packages', path: '/package' },
   { name: 'About Us', path: '/about' },
   { name: 'Contact', path: '/contact' },
@@ -18,17 +18,17 @@ export const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center">
-            <img 
-              src="/logo.jpg" 
-              alt="Illam Tour Planners Logo"
+            <img
+              src="../../../public/images/vaidehilogo.png"
+              alt="Vaidehi Holidays Logo"
               className="h-10 w-10 mr-3 rounded-full"
               width="40"
               height="40"
               loading="lazy"
             />
             <span className="text-2xl font-bold text-white drop-shadow-lg">
-  Illam Tour Planners
-</span>
+              Vaidehi Holidays
+            </span>
           </div>
 
           {/* Desktop Navigation */}
@@ -45,15 +45,15 @@ export const Header = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-300 transition-all duration-300 group-hover:w-full group-[.active]:w-full"></span>
               </NavLink>
             ))}
-            
+<a href='/package'>
             <button className="ml-4 px-6 py-2 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-white/20">
               Book Now
-            </button>
+            </button></a>
           </nav>
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center">
-            <button 
+            <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-white hover:text-blue-200 focus:outline-none"
               aria-label="Toggle menu"

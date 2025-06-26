@@ -10,9 +10,9 @@ export const Footer = () => {
   ];
 
 const aboutLinks = [
-  { name: "About Us", icon: "ℹ️", href: "/about" },
-  { name: "Legal Notice", icon: "⚖️", href: "/legal" },
-  { name: "Terms & Conditions", icon: "📝", href: "/terms" },
+  { name: "About Us", icon: "ℹ️", href: "/About" },
+  // { name: "Legal Notice", icon: "⚖️", href: "/legal" },
+  // { name: "Terms & Conditions", icon: "📝", href: "/terms" },
   { name: "Contact Us", icon: "✉️", href: "/contact" },
 ];
   return (
@@ -24,12 +24,12 @@ const aboutLinks = [
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <img 
-                src="/logo.jpg" 
+                src="../../../public/images/vaidehilogo.png"
                 alt="Logo"
                 className="h-10 w-10 rounded-full"
               />
               <h3 className="text-2xl font-bold bg-gradient-to-r from-teal-300 to-blue-400 bg-clip-text text-transparent">
-                Ilam Tour Planners
+                Vaidehi Holidays
               </h3>
             </div>
             <p className="text-gray-300">
@@ -95,7 +95,7 @@ const aboutLinks = [
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Call Us</p>
-                  <p className="font-medium">+977 9841234567</p>
+                  <p className="font-medium">+91 9400440686 ,<br/>+91 8547854685 ,<br/>+91 8943806318 ,<br/>+91 9633628540 ,</p>
                 </div>
               </div>
               
@@ -107,16 +107,16 @@ const aboutLinks = [
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Email Us</p>
-                  <p className="font-medium">info@ilamtourplanners.com</p>
+                  <p className="font-medium">Vaidehiholidayskanhangad@gmail.com</p>
                 </div>
               </div>
             </div>
 
             <div className="pt-4">
               <h5 className="text-lg font-medium mb-3">Follow Us</h5>
-              <div className="flex gap-4">
+              <div className="flex gap-1">
                 <a 
-                  href="/About" 
+                  href="https://www.instagram.com/vaidehi_holidays?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
                   className="text-pink-500 hover:scale-110 transition-transform"
                   aria-label="Instagram"
                 >
@@ -132,7 +132,7 @@ const aboutLinks = [
         {/* Bottom Section */}
         <div className="border-t border-gray-700 py-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-center md:text-left mb-4 md:mb-0 text-gray-400">
-            © {new Date().getFullYear()} <span className="text-teal-300">Ilam Tour Planners</span>. All rights reserved.
+            © {new Date().getFullYear()} <span className="text-teal-300">Vaidehi Holidays</span>. All rights reserved.
           </div>
           <div className="flex gap-6">
             <a href="#" className="text-gray-400 hover:text-teal-300 transition-colors">
