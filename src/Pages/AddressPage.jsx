@@ -105,7 +105,7 @@ const AddressPage = () => {
         date:packages.date
       }
     : null;
-
+const totalAmount = packages?.advancePrice * people.length;
   const handleContinue = () => {
     if (!validateStep() || !packageDetails) return;
 
@@ -115,7 +115,7 @@ const AddressPage = () => {
         packageDetails,
         amount: packages.PricePerPerson,
         discount:packages.discount,
-        advancePayment:packages?.advancePrice
+        advancePayment:totalAmount
       }
     });
   };
