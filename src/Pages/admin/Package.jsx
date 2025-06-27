@@ -12,7 +12,7 @@ const CreatePackageForm = () => {
   const [pickupPoints, setPickupPoints] = useState(['']);
 
   const handleAddPickupPoint = () => {
-    if (pickupPoints.length < 6) setPickupPoints([...pickupPoints, '']);
+    if (pickupPoints.length < 20) setPickupPoints([...pickupPoints, '']);
   };
 
   const handlePickupChange = (index, value) => {
@@ -212,7 +212,7 @@ const CreatePackageForm = () => {
                 )}
               </div>
             ))}
-            {pickupPoints.length < 6 && (
+            {pickupPoints.length < 20 && (
               <button type="button" onClick={handleAddPickupPoint} className="text-blue-600 text-sm mt-2 font-medium">+ Add Pickup Point</button>
             )}
           </div>

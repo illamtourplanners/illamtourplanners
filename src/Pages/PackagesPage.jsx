@@ -103,10 +103,10 @@ export const PackagesPage = () => {
                   <h3 className="text-xl font-bold mt-2 mb-3">{pkg.PackageName}</h3>
                   <div className="flex items-center text-gray-600 dark:text-gray-400 mb-4">
                     <FaMapMarkerAlt className="mr-2 text-orange-500" />
-                    <span>{pkg.dropoff}</span>
+                    <span>{pkg.description}</span>
                   </div>
 
-                  <div className="flex justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                  {/* <div className="flex justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                     <div className="flex items-center">
                       <FaBed className="mr-2 text-orange-500" />
                       <span>2 Beds</span>
@@ -119,7 +119,7 @@ export const PackagesPage = () => {
                       <FaUmbrellaBeach className="mr-2 text-orange-500" />
                       <span>Beach</span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
