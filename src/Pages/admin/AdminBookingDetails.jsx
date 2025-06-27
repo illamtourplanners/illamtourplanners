@@ -3,51 +3,13 @@ import { axiosInstance } from '../../config/axiosInstance';
 import { useParams } from 'react-router-dom';
 
 const BookingDetailsPage = () => {
-  // Sample booking data (would typically come from API)
-  const [booking] = useState({
-    id: 'BK-2023-05678',
-    customer: {
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '+1 (555) 123-4567',
-      address: '123 Main St, New York, NY 10001'
-    },
-    tourPackage: {
-      name: 'Premium Bali Adventure',
-      duration: '7 Days / 6 Nights',
-      destinations: ['Ubud', 'Seminyak', 'Uluwatu', 'Nusa Penida'],
-      inclusions: ['Accommodation', 'Breakfast', 'Airport Transfers', 'Guided Tours']
-    },
-    dates: {
-      start: '2023-06-15',
-      end: '2023-06-21',
-      bookingDate: '2023-05-10'
-    },
-    guests: {
-      adults: 2,
-      children: 1,
-      infants: 0
-    },
-    pricing: {
-      basePrice: 1299,
-      taxes: 129.90,
-      discount: 100,
-      total: 1328.90
-    },
-    paymentStatus: 'Completed',
-    paymentMethod: 'Credit Card',
-    paymentDate: '2023-05-12 14:30:22',
-    paymentImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9t0Fry6EoFXhrDlwi0DXXaWpD86fiz8mWiA&s',
-    specialRequests: 'Need vegetarian meals. Prefer connecting rooms. Please arrange airport pickup.',
-    status: 'Confirmed',
-    notes: 'Customer celebrating anniversary - please arrange surprise cake'
-  });
+  
 
   
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
   const [isEditingNotes, setIsEditingNotes] = useState(false);
-  const [notes, setNotes] = useState(booking.notes);
+  // const [notes, setNotes] = useState(bookings?.notes);
  const [bookings, setBooking] = useState(null);
 
   
@@ -123,7 +85,25 @@ const BookingDetailsPage = () => {
   };
 
 
+const sendConformation=async()=>{
+  console.log("df");
+  
+ try {
+  const response = await axiosInstance.post("/checkout/confirm", {
+  bookingId: id,
+  transactionId: bookings?.transactionId,
+  customerEmail: bookings?.customers?.email,
+  customerName: bookings?.customers?.name,
+  packageName: bookings?.tourPackage?.name,
+  travelDate: bookings?.dates?.start,
+});
+console.log(response);
 
+ } catch (error) {
+  console.log(error);
+  
+ }
+}
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
@@ -133,15 +113,15 @@ const BookingDetailsPage = () => {
           <div>
             <h1 className="text-3xl font-bold text-gray-800">Tour Booking Details</h1>
             <div className="flex items-center mt-1 gap-2">
-              <span className="text-gray-600">Booking ID: {booking.id}</span>
+              <span className="text-gray-600">Booking ID: {bookings?.id}</span>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                booking.status === 'Confirmed' 
+                bookings?.status === 'Confirmed' 
                   ? 'bg-green-100 text-green-800' 
-                  : booking.status === 'Pending'
+                  : bookings?.status === 'Pending'
                   ? 'bg-yellow-100 text-yellow-800'
                   : 'bg-red-100 text-red-800'
               }`}>
-                {booking.status}
+                {bookings?.status}
               </span>
             </div>
           </div>
@@ -190,8 +170,8 @@ const BookingDetailsPage = () => {
               <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Amount</h3>
               <p className="text-2xl font-bold text-blue-600 mt-1">₹{bookings?.pricing.total.toFixed(2)}</p>
               <p className="text-sm text-gray-600">
-                <span className={`px-1 py-0.5 rounded ${booking.paymentStatus === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                  {booking.paymentStatus}
+                <span className={`px-1 py-0.5 rounded ${bookings?.paymentStatus === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                  {bookings?.paymentStatus}
                 </span>
               </p>
             </div>
@@ -199,7 +179,10 @@ const BookingDetailsPage = () => {
             <div>
               <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</h3>
               <div className="flex gap-2 mt-2">
-                <button className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded hover:bg-blue-100">
+                <button
+                onClick={() => sendConformation()}
+
+                 className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded hover:bg-blue-100">
                   Send Confirmation
                 </button>
                 <button className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded hover:bg-green-100">
@@ -325,7 +308,7 @@ const BookingDetailsPage = () => {
                 <div className="mt-5">
                   <h3 className="font-medium text-gray-700 mb-2">Destinations</h3>
                   <div className="flex flex-wrap gap-2">
-                    {booking.tourPackage.destinations.map((destination, index) => (
+                    {bookings?.tourPackage.destinations.map((destination, index) => (
                       <span key={index} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">
                         {destination}
                       </span>
@@ -366,7 +349,7 @@ const BookingDetailsPage = () => {
                       <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                     </div>
                     <h3 className="font-medium text-gray-900">Booking Created</h3>
-                    <time className="block mb-2 text-sm font-normal leading-none text-gray-500">{new Date(booking.dates.bookingDate).toLocaleDateString()}</time>
+                    <time className="block mb-2 text-sm font-normal leading-none text-gray-500">{new Date(bookings?.dates.bookingDate).toLocaleDateString()}</time>
                     <p className="text-sm text-gray-600">Customer placed booking through website</p>
                   </div>
                   
@@ -376,8 +359,8 @@ const BookingDetailsPage = () => {
                       <div className="w-2 h-2 bg-green-600 rounded-full"></div>
                     </div>
                     <h3 className="font-medium text-gray-900">Payment Received</h3>
-                    <time className="block mb-2 text-sm font-normal leading-none text-gray-500">{new Date(booking.paymentDate).toLocaleDateString()}</time>
-                    <p className="text-sm text-gray-600">Payment processed successfully via {booking.paymentMethod}</p>
+                    <time className="block mb-2 text-sm font-normal leading-none text-gray-500">{new Date(bookings?.paymentDate).toLocaleDateString()}</time>
+                    <p className="text-sm text-gray-600">Payment processed successfully via {bookings?.paymentMethod}</p>
                   </div>
                   
                   {/* Timeline item */}
@@ -386,8 +369,8 @@ const BookingDetailsPage = () => {
                       <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
                     </div>
                     <h3 className="font-medium text-gray-900">Tour Starts</h3>
-                    <time className="block mb-2 text-sm font-normal leading-none text-gray-500">{new Date(booking.dates.start).toLocaleDateString()}</time>
-                    <p className="text-sm text-gray-600">Tour begins in {booking.tourPackage.duration}</p>
+                    <time className="block mb-2 text-sm font-normal leading-none text-gray-500">{new Date(bookings?.dates.start).toLocaleDateString()}</time>
+                    <p className="text-sm text-gray-600">Tour begins in {bookings?.tourPackage.duration}</p>
                   </div>
                 </div>
               </div>
@@ -490,7 +473,7 @@ const BookingDetailsPage = () => {
       </div>
 
       {/* Image Modal */}
-      {imageModalOpen && booking.paymentImage && (
+      {imageModalOpen && bookings?.paymentImage && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
           onClick={() => setImageModalOpen(false)}

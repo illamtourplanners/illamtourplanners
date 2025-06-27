@@ -23,6 +23,7 @@ import AdminBookingPackages from '../Pages/admin/AdminBookingPackages'
 import AdminBookingDetails from '../Pages/admin/AdminBookingDetails'
 import AdminBusPassengers from '../Pages/admin/AdminBusPassengers'
 import AllPackages from '../Pages/admin/AllPackages'
+import { AdminExpense } from '../Pages/admin/AdminExpense'
 
 
 export const router=createBrowserRouter([
@@ -105,7 +106,10 @@ export const router=createBrowserRouter([
                 path: "passengers/:id",
                 element: < AdminBusPassengers/>
             },          
-
+{
+                path: "AdminExpense",
+                element: < AdminExpense/>
+            },  
 
            
         ]},

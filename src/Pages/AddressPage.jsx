@@ -274,7 +274,7 @@ const AddressPage = () => {
                       </div>
 
                       {/* Phone (only primary) */}
-                      {index === 0 && (
+                  
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Phone Number <span className="text-gray-500 text-xs">(If it's a WhatsApp number, enter it here)</span>
@@ -292,8 +292,7 @@ const AddressPage = () => {
                             <p className="text-red-500 text-xs mt-1">{errors.primaryPhone}</p>
                           )}
                         </div>
-                      )}
-
+                    
 
                       {/* Email (only primary) */}
                       {index === 0 && (
@@ -363,9 +362,9 @@ const AddressPage = () => {
 
                       </div>
 
-                      {/* Pickup Point (only primary) */}
-                      {index === 0 && (
-                        <div>
+                    
+
+                       <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Pickup Location
                           </label>
@@ -392,7 +391,6 @@ const AddressPage = () => {
                             <p className="text-red-500 text-xs mt-1">{errors.primaryPickupPoint}</p>
                           )}
                         </div>
-                      )}
 
                       {/* Aadhaar */}
                       <div>

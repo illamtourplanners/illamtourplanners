@@ -123,33 +123,34 @@ const handleMarkAllAsBoarded = async () => {
 };
 
 const handleExportCSV = () => {
-  // CSV headers
-  const headers = ['Name', 'Pickup Point', 'People', 'Status', 'Booking ID', 'Customer Index'];
-  
-  // CSV data rows
-  const rows = passengers.map(passenger => [
+  // Add "Index" as the first header
+  const headers = ['Index', 'Name', 'Pickup Point', 'People', 'Status', 'Booking ID'];
+
+  // Include index starting from 1
+  const rows = passengers.map((passenger, index) => [
+    index + 1, // Index starting at 1
     passenger.name,
     passenger.pickupPoint,
     passenger.people,
     passenger.isBoarded ? 'Boarded' : 'Pending',
     passenger.bookingId,
-    passenger.customerIndex
+  
   ]);
 
   // Create CSV content with proper escaping
   const csvContent = [
-    headers.join(','),
-    ...rows.map(row => 
-      row.map(field => `"${field.toString().replace(/"/g, '""')}"`).join(',')
+    headers.join(','), // Header row
+    ...rows.map(row =>
+      row.map(field => `"${field.toString().replace(/"/g, '""')}"`).join(',') // Escape double quotes
     )
   ].join('\n');
 
-  // Create and download file
+  // Create and download CSV file
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   const fileName = `passengers-${pkg?.name?.replace(/\s+/g, '-') || 'list'}-${new Date().toISOString().slice(0, 10)}.csv`;
-  
+
   link.setAttribute('href', url);
   link.setAttribute('download', fileName);
   link.style.visibility = 'hidden';
@@ -157,6 +158,7 @@ const handleExportCSV = () => {
   link.click();
   document.body.removeChild(link);
 };
+
 
 const handlePrint = () => {
   const printWindow = window.open('', '_blank');
@@ -401,7 +403,7 @@ const handlePrint = () => {
               <th className="py-3 px-4 text-left w-12">Status</th>
               <th className="py-3 px-4 text-left">Passenger Name</th>
               <th className="py-3 px-4 text-left">Pickup Point</th>
-              <th className="py-3 px-4 text-left">People</th>
+              {/* <th className="py-3 px-4 text-left">People</th> */}
               <th className="py-3 px-4 text-left">Notes</th>
               <th className="py-3 px-4 text-left">Actions</th>
             </tr>
@@ -423,11 +425,11 @@ const handlePrint = () => {
                     {passenger.pickupPoint}
                   </span>
                 </td>
-                <td className="py-4 px-4">
+                {/* <td className="py-4 px-4">
                   <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-800">
                     {passenger.people}
                   </span>
-                </td>
+                </td> */}
                 <td className="py-4 px-4">
                   {showNotes[passenger.id] ? (
                     <div>

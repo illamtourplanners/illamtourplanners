@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Home, Package, BookOpen, Mail, Settings, Plus } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-
+import { Wallet } from 'lucide-react';
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -73,15 +73,15 @@ const Sidebar = () => {
               <span className="text-[10px] hidden group-hover:block">Contact</span>
             </Link>
           </li>
-          <li>
-            <Link
-              to="/admin/settings"
-              className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/settings') ? 'bg-gray-700' : ''}`}
-            >
-              <Settings className="w-5 h-5" />
-              <span className="text-[10px] hidden group-hover:block">Settings</span>
-            </Link>
-          </li>
+         <li>
+  <Link
+    to="/admin/AdminExpense"
+    className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/admin/AdminExpense') ? 'bg-gray-700' : ''}`}
+  >
+    <Wallet className="w-5 h-5" />
+    <span className="text-[10px] hidden group-hover:block">Expense</span>
+  </Link>
+</li>
         </ul>
       </div>
     </>
