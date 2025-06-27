@@ -12,7 +12,7 @@ const CreatePackageForm = () => {
   const [pickupPoints, setPickupPoints] = useState(['']);
 
   const handleAddPickupPoint = () => {
-    if (pickupPoints.length < 6) setPickupPoints([...pickupPoints, '']);
+    if (pickupPoints.length < 20) setPickupPoints([...pickupPoints, '']);
   };
 
   const handlePickupChange = (index, value) => {
