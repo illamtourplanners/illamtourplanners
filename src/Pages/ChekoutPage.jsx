@@ -183,6 +183,7 @@ const onFormSubmit = async (data) => {
                       <div className="flex flex-col items-center text-center">
                         <div className="mb-6 p-4 bg-white rounded-lg border-2 border-dashed border-blue-200">
                           <img
+                          id="qrImage"
                             src={`https://quickchart.io/qr?text=${encodeURIComponent(upiLink)}`}
                             alt="UPI QR Code"
                             className="w-48 h-48 mx-auto"
@@ -191,14 +192,27 @@ const onFormSubmit = async (data) => {
 
                         <p className="text-gray-700 mb-2">Scan this QR code with any UPI app to complete your payment</p>
 
-                        <button
+                        {/* <button
                           onClick={copyToClipboard}
                           type="button"
                           className="text-blue-600 hover:underline flex items-center gap-1 mb-4"
                         >
                           <FiCopy />
                           {isCopied ? "Copied!" : "Copy UPI Link"}
-                        </button>
+                        </button> */}
+                        <button
+  onClick={() => {
+    const image = document.getElementById("qrImage");
+    const link = document.createElement("a");
+    link.href = image.src;
+    link.download = "upi-qr-code.png";
+    link.click();
+  }}
+  className="mt-4 px-4 py-2 bg-blue-100 text-blue-800 font-semibold rounded hover:bg-blue-200 text-sm"
+>
+  ⬇️ Download QR Code
+</button>
+
 
                     <div className="w-full max-w-md">
   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -329,11 +343,11 @@ const onFormSubmit = async (data) => {
                         <hr />
 
                         <div className="flex justify-between">
-                          <span>Package Price</span>
+                          <span>Package Price Per Person</span>
                           <span>₹{amount}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>Advance Payment</span>
+                          <span>Advance Payment for {packageDetails.person} peoples</span>
                           <span>₹{advancePayment}</span>
                         </div>
                         <div className="flex justify-between">
