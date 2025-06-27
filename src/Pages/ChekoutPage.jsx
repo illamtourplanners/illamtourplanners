@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+
 import { motion } from "framer-motion";
 import { BsCheckCircle } from "react-icons/bs";
 import { FiChevronLeft, FiCopy } from "react-icons/fi";

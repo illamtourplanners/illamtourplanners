@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Users, Settings, Package, BookOpen, Mail } from 'lucide-react';
+import { Home, Package, BookOpen, Mail, Settings, Plus } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -39,10 +39,10 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/admin/users"
+              to="/admin/PackagesList"
               className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/users') ? 'bg-gray-700' : ''}`}
             >
-              <Users className="w-5 h-5" />
+              <Package className="w-5 h-5" />
               <span className="text-[10px] hidden group-hover:block">Users</span>
             </Link>
           </li>
@@ -51,7 +51,7 @@ const Sidebar = () => {
               to="/admin/package"
               className={`group flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-700 ${isActive('/package') ? 'bg-gray-700' : ''}`}
             >
-              <Package className="w-5 h-5" />
+              <Plus className="w-5 h-5" />
               <span className="text-[10px] hidden group-hover:block">Packages</span>
             </Link>
           </li>

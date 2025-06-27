@@ -21,6 +21,8 @@ import AddressPage from '../Pages/AddressPage'
 import ConformationPage from '../Pages/ConformationPage'
 import AdminBookingPackages from '../Pages/admin/AdminBookingPackages'
 import AdminBookingDetails from '../Pages/admin/AdminBookingDetails'
+import AdminBusPassengers from '../Pages/admin/AdminBusPassengers'
+import AllPackages from '../Pages/admin/AllPackages'
 
 
 export const router=createBrowserRouter([
@@ -94,8 +96,15 @@ export const router=createBrowserRouter([
             {
                 path: "contact",
                 element: < ContactInfoAdmin/>
-            },            
-
+            },   
+             {
+                path: "PackagesList",
+                element: < AllPackages/>
+            },   
+             {
+                path: "passengers/:id",
+                element: < AdminBusPassengers/>
+            },          
 
 
            

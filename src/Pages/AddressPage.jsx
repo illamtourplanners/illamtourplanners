@@ -115,7 +115,7 @@ const AddressPage = () => {
         packageDetails,
         amount: packages.PricePerPerson,
         discount:packages.discount,
-        advancePayment:packages.advancePayment || 2000
+        advancePayment:packages?.advancePrice
       }
     });
   };

@@ -71,6 +71,7 @@ const BookingDetailsPage = () => {
             inclusions: [] // Not in API response
           },
           dates: {
+            bookedDate:bookingData.createdAt,
             start: bookingData.packageDate,
             end: calculateEndDate(
               bookingData.packageDate,
@@ -146,25 +147,25 @@ const BookingDetailsPage = () => {
           </div>
           
           <div className="flex gap-2">
-            <button className="px-4 py-2 flex items-center gap-1 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition shadow-sm">
+            {/* <button className="px-4 py-2 flex items-center gap-1 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition shadow-sm">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                 <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
               </svg>
               Edit Booking
-            </button>
+            </button> */}
             <button className="px-4 py-2 flex items-center gap-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition shadow-md">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
               </svg>
               Payment Actions
             </button>
-            <button className="px-4 py-2 flex items-center gap-1 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">
+            {/* <button className="px-4 py-2 flex items-center gap-1 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
               </svg>
               Back
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -315,7 +316,7 @@ const BookingDetailsPage = () => {
               </div>
               <div className="p-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <DetailItem icon="calendar" label="Booking Date" value={new Date(bookings?.dates.bookingDate).toLocaleDateString()} />
+                  <DetailItem icon="calendar" label="Booking Date" value={new Date(bookings?.dates.bookedDate).toLocaleDateString()} />
                   <DetailItem icon="clock" label="Duration" value={bookings?.tourPackage.duration} />
                   <DetailItem icon="users" label="Travelers" value={`${bookings?.guests.adults} Adults, ${bookings?.guests.children} Children`} />
                   <DetailItem icon="credit-card" label="Package Price" value={`₹${bookings?.pricing.perperson.toFixed(2)}`} />
