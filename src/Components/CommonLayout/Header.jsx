@@ -26,9 +26,9 @@ export const Header = () => {
               height="40"
               loading="lazy"
             />
-            <span className="text-2xl font-bold text-white drop-shadow-lg">
+           <a href='/'> <span className="text-2xl font-bold text-white drop-shadow-lg">
               Vaidehi Holidays
-            </span>
+            </span></a>
           </div>
 
           {/* Desktop Navigation */}
