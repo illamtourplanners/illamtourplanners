@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { axiosInstance } from '../../config/axiosInstance';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const AdminPackagesPage = () => {
   const [packages, setPackages] = useState([]);
@@ -40,23 +42,35 @@ const navigate=useNavigate()
   const currentPackages = filteredPackages.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredPackages.length / itemsPerPage);
 
- const handleDelete = async (id) => {
-  if (window.confirm("Are you sure you want to delete this package?")) {
+const handleDelete = async (id) => {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: 'You won’t be able to revert this!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, cancel!',
+  });
+
+  if (result.isConfirmed) {
     try {
       const response = await axiosInstance.delete(`/package/delete/${id}`);
       if (response.data.success) {
-        // Update the UI after successful deletion
         setPackages((prev) => prev.filter((pkg) => pkg._id !== id));
+        Swal.fire('Deleted!', 'Package deleted successfully.', 'success');
       } else {
-        alert("Failed to delete package.");
+        Swal.fire('Failed!', 'Failed to delete package.', 'error');
       }
     } catch (err) {
       console.error("Error deleting package:", err);
-      alert("An error occurred while deleting the package.");
+      Swal.fire('Error!', 'An error occurred while deleting the package.', 'error');
     }
+  } else {
+    Swal.fire('Cancelled', 'Package is safe 🙂', 'info');
   }
 };
-
 
 
 const nav = (id) => {
