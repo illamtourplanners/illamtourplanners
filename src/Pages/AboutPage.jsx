@@ -1,6 +1,10 @@
 import React from 'react';
 import { FaStar, FaLeaf, FaRoute, FaUserTie, FaHandsHelping, FaInstagram } from 'react-icons/fa';
 import { GiPathDistance, GiJourney } from 'react-icons/gi';
+import Keshavapatteri from "../../public/images/keshu.jpg"
+import Sreehari from "../../public/images/sreehari.jpg"
+import Rishikesh from "../../public/images/rishi.jpg"
+import Upendran from "../../public/images/upz.jpg"
 
 export const AboutPage = () => {
 
@@ -8,7 +12,7 @@ export const AboutPage = () => {
     { 
       name: 'Keshavapatteri', 
       role: 'Route Designer', 
-      image: '../../public/images/keshu.jpg',
+      image: Keshavapatteri,
       bio: 'Designs immersive routes showcasing authentic South Indian heritage with 2+ years experience',
       social: {
         instagram: 'https://www.instagram.com/keshu_mkt?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='
@@ -17,7 +21,7 @@ export const AboutPage = () => {
     { 
       name: 'Sreehari', 
       role: 'Tour Operations', 
-      image: '../../public/images/sreehari.jpg',
+      image: Sreehari,
       bio: 'Ensures seamless operations and creates memorable experiences for every guest.',
       social: {
         instagram: 'https://www.instagram.com/__mr_hoonigan__?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='
@@ -26,7 +30,7 @@ export const AboutPage = () => {
     { 
       name: 'Rishikesh', 
       role: 'Tour Operations',
-      image: '../../public/images/rishi.jpg',
+      image: Rishikesh,
       bio: 'Connects travelers with local communities and manages all logistical details.',
       social: {
         instagram: 'https://www.instagram.com/rishikesh_thekkathillam?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='
@@ -35,7 +39,7 @@ export const AboutPage = () => {
     { 
       name: 'Upendran', 
       role: 'Guest Relations', 
-      image: '../../public/images/upz.jpg',
+      image: Upendran,
       bio: 'Ensures exceptional service through clear communication between guests and our team.',
       social: {
         instagram: 'https://www.instagram.com/u_p_z_z_z?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=='
