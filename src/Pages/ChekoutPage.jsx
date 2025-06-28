@@ -19,7 +19,7 @@ const [previewImage, setPreviewImage] = useState(null);
 
 
 
-  const totalAmount = Math.max(0, advancePayment - discount);
+  const totalAmount = advancePayment
  const upiLink = `upi://pay?pa=keshavanpatteri2000-1@oksbi&pn=Vaidehi Holidays&am=${totalAmount}&cu=INR&tn=Advance Booking Payment
 `;
 
@@ -351,10 +351,7 @@ console.log(res);
                           <span>Advance Payment for {packageDetails.person} peoples</span>
                           <span>₹{advancePayment}</span>
                         </div>
-                        <div className="flex justify-between">
-                          <span>Discount</span>
-                          <span className="text-green-600">-₹{discount}</span>
-                        </div>
+                        
 
                         <div className="flex justify-between font-bold text-blue-700 text-lg pt-3">
                           <span>Pay Now</span>

@@ -84,16 +84,19 @@ const BookingDetailsPage = () => {
     console.log("Notes saved:", notes);
   };
 
+console.log("dfdfd",bookings?.customers?.[0].fullName);
+
 
 const sendConformation=async()=>{
   console.log("df");
   
  try {
   const response = await axiosInstance.post("/checkout/confirm", {
-  bookingId: id,
+   bookingId: id,
   transactionId: bookings?.transactionId,
-  customerEmail: bookings?.customers?.email,
-  customerName: bookings?.customers?.name,
+  customerEmail: bookings?.customers?.[0].email,
+  customerName: bookings?.customers?.[0].fullName,
+  customerPhone: bookings?.customers?.[0].phoneNumber, 
   packageName: bookings?.tourPackage?.name,
   travelDate: bookings?.dates?.start,
 });
