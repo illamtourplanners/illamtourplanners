@@ -28,29 +28,30 @@ const {id}=useParams()
   // Get unique pickup points
   const pickupPoints = [...new Set(passengers.map(p => p.pickupPoint))];
   
- const handleBoardingToggle = async (id) => {
-  setPassengers(passengers.map(p => 
-    p.id === id ? { ...p, isBoarded: !p.isBoarded } : p
-  ));
-
+const handleBoardingToggle = async (id) => {
   const passenger = passengers.find(p => p.id === id);
   if (!passenger) return;
 
+  // const confirmUpdate = window.confirm("Are you sure you want to update the status?");
+  // if (!confirmUpdate) return;
 
-  
   try {
- const confirmUpdate = window.confirm("Are you sure you want to update the status?");
-  if (!confirmUpdate) {
-    return; // User clicked Cancel
-  }
-   const response= await axiosInstance.post("/passenger/update-status", {
+    const updatedStatus = passenger.isBoarded ? "Pending" : "Boarded";
+
+    await axiosInstance.post("/passenger/update-status", {
       bookingId: passenger.bookingId,
       customerIndex: passenger.customerIndex,
-      status: passenger.isBoarded ? "Pending" : "Boarded", // toggle value
+      status: updatedStatus,
     });
-    console.log(response.data);
+
+    setPassengers(passengers.map(p =>
+      p.id === id ? { ...p, isBoarded: !p.isBoarded } : p
+    ));
+
+    toast.success(`Status updated to ${updatedStatus}`);
   } catch (err) {
     console.error("Failed to update status:", err);
+    toast.error("Failed to update passenger status");
   }
 };
 
