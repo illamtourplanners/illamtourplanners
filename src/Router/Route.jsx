@@ -24,6 +24,7 @@ import AdminBookingDetails from '../Pages/admin/AdminBookingDetails'
 import AdminBusPassengers from '../Pages/admin/AdminBusPassengers'
 import AllPackages from '../Pages/admin/AllPackages'
 import { AdminExpense } from '../Pages/admin/AdminExpense'
+import ToursPage from '../Pages/ToursPage'
 
 
 export const router=createBrowserRouter([
@@ -55,6 +56,10 @@ export const router=createBrowserRouter([
                          {
                              path: "package",
                              element: <PackagesPage/>
+                         },  
+                          {
+                             path: "tours",
+                             element: <ToursPage/>
                          },  
 
 
