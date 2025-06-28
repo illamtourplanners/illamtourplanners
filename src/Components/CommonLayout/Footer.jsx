@@ -29,9 +29,9 @@ const aboutLinks = [
                 alt="Logo"
                 className="h-10 w-10 rounded-full"
               />
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-teal-300 to-blue-400 bg-clip-text text-transparent">
+           <a href='/'>  <h3 className="text-2xl font-bold bg-gradient-to-r from-teal-300 to-blue-400 bg-clip-text text-transparent">
                 Vaidehi Holidays
-              </h3>
+              </h3></a> 
             </div>
             <p className="text-gray-300">
               Discover the hidden gems of Ilam with our expert guides and curated experiences.

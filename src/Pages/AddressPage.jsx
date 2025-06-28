@@ -277,23 +277,31 @@ console.log(totalAmount,"dfdfdfcdfdfc");
 
                       {/* Phone (only primary) */}
                   
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Phone Number <span className="text-gray-500 text-xs">(If it's a WhatsApp number, enter it here)</span>
-                          </label>
-                          <input
-                            type="tel"
-                            value={person.phone}
-                            onChange={(e) => updatePerson(index, "phone", e.target.value)}
-                            placeholder="Enter phone number"
-                            className={`w-full px-4 py-3 border ${
-                              errors.primaryPhone ? "border-red-500" : "border-gray-200"
-                            } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                          />
-                          {errors.primaryPhone && (
-                            <p className="text-red-500 text-xs mt-1">{errors.primaryPhone}</p>
-                          )}
-                        </div>
+                       <div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">
+    Phone Number <span className="text-gray-500 text-xs">(If it's a WhatsApp number, enter it here)</span>
+  </label>
+  <input
+    type="tel"
+    value={person.phone}
+    onChange={(e) => {
+      // Allow only digits
+      const value = e.target.value.replace(/\D/g, '');
+      if (value.length <= 10) {
+        updatePerson(index, "phone", value);
+      }
+    }}
+    maxLength={10}
+    placeholder="Enter phone number"
+    className={`w-full px-4 py-3 border ${
+      errors.primaryPhone ? "border-red-500" : "border-gray-200"
+    } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+  />
+  {errors.primaryPhone && (
+    <p className="text-red-500 text-xs mt-1">{errors.primaryPhone}</p>
+  )}
+</div>
+
                     
 
                       {/* Email (only primary) */}
