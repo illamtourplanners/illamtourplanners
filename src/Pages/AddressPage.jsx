@@ -102,7 +102,7 @@ const AddressPage = () => {
         day:packages.day,
         person: people.length,
         rooms: 1,
-        date:packages.date
+        date:packages.date 
       }
     : null;
 const totalAmount = packages?.advancePrice * people.length;
