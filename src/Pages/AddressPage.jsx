@@ -106,6 +106,8 @@ const AddressPage = () => {
       }
     : null;
 const totalAmount = packages?.advancePrice * people.length;
+console.log(totalAmount,"dfdfdfcdfdfc");
+
   const handleContinue = () => {
     if (!validateStep() || !packageDetails) return;
 
