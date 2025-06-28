@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CheckCircle, MapPin, Calendar, CreditCard } from 'react-feather';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../config/axiosInstance';
-
+import logo from "../../public/images/vaidehilogo.png"
 export default function VaidehiHolidaysConfirmation() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -14,7 +14,7 @@ export default function VaidehiHolidaysConfirmation() {
         const response = await axiosInstance.get(`/checkout/confirmation/${id}`);
         console.log(response.data.data);
         
-        [setBookingData(response.data.data[0])];
+        setBookingData(response.data.data[0])
       } catch (error) {
         console.error('Error fetching booking details', error);
       }
@@ -39,7 +39,9 @@ export default function VaidehiHolidaysConfirmation() {
         {/* Header with Branding */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-blue-800 mb-2 flex items-center justify-center">
-            <span className="bg-blue-100 p-2 rounded-lg mr-3">✈️</span>
+            <span className="bg-blue-100 p-2 rounded-lg mr-3">
+              <img src={logo} className='w-16' alt="logo" />
+            </span>
             Vaidehi Holidays
           </h1>
           <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-50 mb-4">

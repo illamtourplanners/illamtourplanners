@@ -8,7 +8,7 @@ const navigationLinks = [
   { name: 'About Us', path: '/about' },
   { name: 'Contact', path: '/contact' },
 ];
-
+import logo from "../../../public/images/vaidehilogo.png"
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -19,7 +19,7 @@ export const Header = () => {
           {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center">
             <img
-              src="../../../public/images/vaidehilogo.png"
+              src={logo}
               alt="Vaidehi Holidays Logo"
               className="h-10 w-10 mr-3 rounded-full"
               width="40"
