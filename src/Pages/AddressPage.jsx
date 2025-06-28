@@ -102,6 +102,7 @@ const AddressPage = () => {
 
   const packageDetails = packages
     ? {
+<<<<<<< HEAD
       packageNumber: packages.pkgNumber,
       packageName: packages.PackageName,
       destination: packages.dropoff,
@@ -110,6 +111,16 @@ const AddressPage = () => {
       rooms: 1,
       date: packages.date
     }
+=======
+      packageNumber:packages.pkgNumber,
+        packageName: packages.PackageName,
+        destination: packages.dropoff,
+        day:packages.day,
+        person: people.length,
+        rooms: 1,
+        date:packages.date 
+      }
+>>>>>>> 29440f9f6e2959ac9fcaa8cc45bcd01e977f6e12
     : null;
   const totalAmount = packages?.advancePrice * people.length;
   console.log(totalAmount, "dfdfdfcdfdfc");
