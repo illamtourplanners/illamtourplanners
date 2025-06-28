@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { HeroSection } from '../Components/Home/HeroSection';
 import { Popular } from '../Components/Home/Popular';
 import { FaLeaf } from 'react-icons/fa';
 
 import { FaPrayingHands,FaBell, FaCompass, FaWater, FaMapMarkedAlt, FaPhoneAlt } from 'react-icons/fa';
+import { axiosInstance } from '../config/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 export const HomePage = () => {
  
 
@@ -20,6 +22,7 @@ export const HomePage = () => {
     }
   ];
 
+ 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
