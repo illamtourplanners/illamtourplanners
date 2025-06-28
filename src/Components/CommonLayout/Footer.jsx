@@ -1,5 +1,5 @@
 import React from 'react';
-
+import logo from "../../../public/images/vaidehilogo.png"
 export const Footer = () => {
   const usefulLinks = [
     { name: "All Destinations", icon: "📍" },
@@ -15,6 +15,7 @@ const aboutLinks = [
   // { name: "Terms & Conditions", icon: "📝", href: "/terms" },
   { name: "Contact Us", icon: "✉️", href: "/contact" },
 ];
+
   return (
     <footer className="bg-gradient-to-b from-gray-900 to-gray-800 text-white pt-16 px-4 md:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
@@ -24,7 +25,7 @@ const aboutLinks = [
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <img 
-                src="../../../public/images/vaidehilogo.png"
+                src={logo}
                 alt="Logo"
                 className="h-10 w-10 rounded-full"
               />
@@ -68,7 +69,7 @@ const aboutLinks = [
               {aboutLinks.map((link) => (
                 <li key={link.name}>
                   <a 
-                    href="#" 
+                    href={link.href} 
                     className="flex items-center gap-2 hover:text-blue-300 transition-colors group"
                   >
                     <span className="group-hover:rotate-12 transition-transform">
@@ -130,22 +131,32 @@ const aboutLinks = [
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-700 py-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-center md:text-left mb-4 md:mb-0 text-gray-400">
-            © {new Date().getFullYear()} <span className="text-teal-300">Vaidehi Holidays</span>. All rights reserved.
-          </div>
-          <div className="flex gap-6">
-            <a href="#" className="text-gray-400 hover:text-teal-300 transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-gray-400 hover:text-teal-300 transition-colors">
-              Terms of Service
-            </a>
-            <a href="#" className="text-gray-400 hover:text-teal-300 transition-colors">
-              Sitemap
-            </a>
-          </div>
-        </div>
+       <div className="border-t border-gray-700 py-8 px-4 md:px-12  text-gray-400">
+  <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+    
+    <div className="text-center md:text-left">
+      © {new Date().getFullYear()} <span className="text-teal-300 font-semibold">Vaidehi Holidays</span>. All rights reserved.
+    </div>
+    
+    <div className="text-center md:text-left">
+      <span className="text-teal-300 font-semibold">Powered By</span> TECHISTA SOLUTIONS
+    </div>
+    
+    <div className="flex gap-6 text-sm">
+      <a href="#" className="hover:text-teal-300 transition-colors duration-200">
+        Privacy Policy
+      </a>
+      <a href="#" className="hover:text-teal-300 transition-colors duration-200">
+        Terms of Service
+      </a>
+      <a href="#" className="hover:text-teal-300 transition-colors duration-200">
+        Sitemap
+      </a>
+    </div>
+
+  </div>
+</div>
+
       </div>
     </footer>
   );

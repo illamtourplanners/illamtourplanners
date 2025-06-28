@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, MapPin, Calendar, CreditCard } from 'react-feather';
 import { useNavigate, useParams } from 'react-router-dom';
-import { axiosInstance } from '../config/axiosInstance';
+
 import logo from "../../public/images/vaidehilogo.png"
+import { axiosInstance } from '../config/axiosInstance';
 export default function VaidehiHolidaysConfirmation() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [bookingData, setBookingData] = useState(null);
+console.log( id );
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         const response = await axiosInstance.get(`/checkout/confirmation/${id}`);
-        console.log(response.data.data);
+  
         
         setBookingData(response.data.data[0])
       } catch (error) {
