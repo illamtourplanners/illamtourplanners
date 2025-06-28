@@ -56,14 +56,28 @@ export const router=createBrowserRouter([
                              path: "package",
                              element: <PackagesPage/>
                          },  
+
+
+
+           
+        ]},
+
  {
-                             path: "confirm",
+        path: "/",
+        // element:<RootLayout/>,
+        children:[
+          {
+                             path: "confirm/:id",
                              element: <ConformationPage/>
                          }, 
 
 
            
         ]},
+
+
+
+
 
      {
         path: "/admin",

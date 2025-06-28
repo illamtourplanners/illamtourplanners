@@ -1,25 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckCircle, MapPin, Calendar, CreditCard } from 'react-feather';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { axiosInstance } from '../config/axiosInstance';
 
 export default function VaidehiHolidaysConfirmation() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [bookingData, setBookingData] = useState(null);
 
-  // Sample booking data
-  const bookingDetails = {
-    bookingId: 'VH-2023-2876',
-    amount: '₹24,999',
-    date: new Date().toLocaleDateString('en-IN', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }),
-    package: 'Goa Beach Paradise (4D/3N)',
-    travelers: '2 Adults',
-    departure: '15 Dec 2023',
-    paymentMethod: 'VISA •••• 5678'
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await axiosInstance.get(`/checkout/confirmation/${id}`);
+        console.log(response.data.data);
+        
+        [setBookingData(response.data.data[0])];
+      } catch (error) {
+        console.error('Error fetching booking details', error);
+      }
+    };
+    fetchDetails();
+  }, [id]);
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+    }).format(amount);
   };
+
+  if (!bookingData) {
+    return <div className="text-center mt-10 text-gray-600">Loading booking confirmation...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-blue-50 flex items-center justify-center p-4">
@@ -41,23 +53,31 @@ export default function VaidehiHolidaysConfirmation() {
         <div className="bg-blue-50 rounded-lg p-5 mb-8 border border-blue-200">
           <h3 className="text-lg font-medium text-blue-800 mb-4 flex items-center">
             <MapPin className="mr-2" size={18} />
-            {bookingDetails.package}
+            {bookingData.packageName}
           </h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex items-start">
               <Calendar className="text-blue-600 mr-3 mt-1" size={16} />
               <div>
                 <p className="text-sm text-gray-500">Departure</p>
-                <p className="font-medium">{bookingDetails.departure}</p>
+               <p className="font-medium">
+  {new Date(bookingData.packageDate).toLocaleDateString('en-IN', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })}
+</p>
+
               </div>
             </div>
-            
+
             <div className="flex items-start">
               <CreditCard className="text-blue-600 mr-3 mt-1" size={16} />
               <div>
                 <p className="text-sm text-gray-500">Payment Method</p>
-                <p className="font-medium">{bookingDetails.paymentMethod}</p>
+                <p className="font-medium">Online / UPI</p>
               </div>
             </div>
           </div>
@@ -69,19 +89,27 @@ export default function VaidehiHolidaysConfirmation() {
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-gray-600">Booking ID</span>
-              <span className="font-medium">{bookingDetails.bookingId}</span>
+              <span className="font-medium">{bookingData.bookingNumber}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Travelers</span>
-              <span className="font-medium">{bookingDetails.travelers}</span>
+              <span className="font-medium">
+                {bookingData.customers?.length} Traveler{bookingData.customers?.length > 1 ? 's' : ''}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Total Amount</span>
-              <span className="font-bold text-blue-800">{bookingDetails.amount}</span>
+              <span className="font-bold text-blue-800">{formatCurrency(bookingData.amount)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Booking Date</span>
-              <span className="font-medium">{bookingDetails.date}</span>
+              <span className="font-medium">
+                {new Date(bookingData.createdAt).toLocaleDateString('en-IN', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
             </div>
           </div>
         </div>
@@ -114,7 +142,10 @@ export default function VaidehiHolidaysConfirmation() {
 
         {/* Support */}
         <div className="mt-6 text-center text-sm text-gray-500">
-          Need help? Call our support at <a href="tel:+91 9400440686, 8547854685" className="text-blue-600 hover:underline">+91 9400440686, +91 8547854685</a>
+          Need help? Call our support at{' '}
+          <a href="tel:+91 9400440686, 8547854685" className="text-blue-600 hover:underline">
+            +91 9400440686, +91 8547854685
+          </a>
         </div>
       </div>
     </div>

@@ -83,10 +83,11 @@ const onFormSubmit = async (data) => {
     const res = await axiosInstance.post("/checkout/create", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+console.log(res);
 
     if (res.data.success === true) {
       setTimeout(() => {
-        navigate("/confirm");
+        navigate(`/confirm/${res.data.transactionId}`);
       }, 3000);
     }
   } catch (error) {
