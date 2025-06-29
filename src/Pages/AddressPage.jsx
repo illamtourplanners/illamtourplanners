@@ -175,7 +175,7 @@ const AddressPage = () => {
             <div className="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-8 relative">
               <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <div>
-                  <h1 className="text-2xl font-bold">Illam Tour Planners</h1>
+                  <h1 className="text-2xl font-bold">Vaidehi Holidays</h1>
                   <p className="mt-1 opacity-90">Secure your dream vacation package</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl py-2 px-4 w-fit">
@@ -496,7 +496,7 @@ const AddressPage = () => {
 
             {/* Footer */}
             <div className="bg-gray-50 p-4 text-center text-xs text-gray-500 border-t">
-              © 2025 Illam Tour Planners | Premium Travel Experiences
+              © 2025 Vaidehi Holidays | Premium Travel Experiences
             </div>
           </motion.div>
         </div>
