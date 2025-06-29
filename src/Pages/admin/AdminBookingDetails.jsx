@@ -84,9 +84,11 @@ const BookingDetailsPage = () => {
     console.log("Notes saved:", notes);
   };
 
-console.log("dfdfd",bookings?.customers?.[0].fullName);
+console.log("dfdfd",[...new Set(bookings?.customers?.map(c => c.pickupPoint))].join(', '));
 
-
+// const allSeatNumbers = bookings?.customers
+//   ?.map((c, idx) => `Seat ${idx + 1}`)
+//   .join(', ');
 const sendConformation=async()=>{
   console.log("df");
   
@@ -99,6 +101,12 @@ const sendConformation=async()=>{
   customerPhone: bookings?.customers?.[0].phoneNumber, 
   packageName: bookings?.tourPackage?.name,
   travelDate: bookings?.dates?.start,
+  totalPassengers:bookings?.customers?.length,
+  bookingNumber:bookings?.packageDetails?.packageNumber,
+  allCustomerNames: bookings?.customers?.map(c => c.fullName).join(', '),
+  allPickupPoints: [...new Set(bookings?.customers?.map(c => c.pickupPoint))].join(', '),
+  to:bookings?.packageDetails?.packageDestination,
+  // seatnumbers:allSeatNumbers
 });
 console.log(response);
 
