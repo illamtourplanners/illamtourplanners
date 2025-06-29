@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { axiosInstance } from '../../config/axiosInstance';
-
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 export const AdminExpense = () => {
   // State management
   const [formData, setFormData] = useState({
@@ -51,49 +52,54 @@ export const AdminExpense = () => {
   }, []);
 
   // Form handlers
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+ const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData(prev => ({ ...prev, [name]: value }));
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    try {
-      const res = await axiosInstance.post('/expense/create', formData);
-      setMessage({ text: res.data.message, type: 'success' });
-      setFormData({ 
-        category: '', 
-        categoryname: '', 
-        rupee: '', 
-        quantity: '1',
-        paymentMethod: '' 
-      });
-      await fetchExpenses();
-    } catch (err) {
-      setMessage({ 
-        text: err.response?.data?.message || 'Error occurred', 
-        type: 'error' 
-      });
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  
+  try {
+    const res = await axiosInstance.post('/expense/create', formData);
+    toast.success(res.data.message || 'Expense added successfully!');
+    setFormData({ 
+      category: '', 
+      categoryname: '', 
+      rupee: '', 
+      quantity: '1',
+      paymentMethod: '' 
+    });
+    await fetchExpenses();
+  } catch (err) {
+    toast.error(err.response?.data?.message || 'Error occurred while adding expense');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+const handleDelete = (id) => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You will not be able to recover this expense!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await axiosInstance.delete(`/expense/delete/${id}`);
+        Swal.fire('Deleted!', 'Expense has been deleted.', 'success');
+        await fetchExpenses();
+      } catch {
+        Swal.fire('Error', 'Failed to delete expense', 'error');
+      }
     }
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this expense?')) return;
-    
-    try {
-      await axiosInstance.delete(`/expense/delete/${id}`);
-      setMessage({ text: 'Expense deleted successfully', type: 'success' });
-      await fetchExpenses();
-    } catch (err) {
-      setMessage({ text: 'Failed to delete expense', type: 'error' });
-    }
-  };
-
+  });
+};
   // Helper functions
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', {
