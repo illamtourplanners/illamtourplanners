@@ -19,7 +19,7 @@ export default function TourAdminHomePage() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 ">
       {/* Main Content */}
       <div className="flex-1 p-8">
         {/* Header */}
