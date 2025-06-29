@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   FiSearch, FiFilter, FiCalendar, FiUser, FiDollarSign, FiPackage,
-  FiCheck, FiX, FiClock, FiChevronDown, FiChevronUp, FiPhone, FiDownload
+  FiCheck, FiX, FiClock, FiChevronDown, FiChevronUp, FiPhone, FiDownload,
+  FiUsers
 } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../config/axiosInstance';
@@ -19,6 +20,7 @@ const AdminBookingsPage = () => {
     pending: 0,
     cancelled: 0,
     revenue: 0,
+    totalPassengers:0,
   });
   const [packageName, setPackageName] = useState('Package');
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ const AdminBookingsPage = () => {
       try {
         const response = await axiosInstance.get(`/checkout/bookings/${id}`);
         const data = response.data.data;
+        console.log(data);
         
         // Extract package name from the first booking
         if (data.length > 0) {
@@ -40,7 +43,7 @@ const AdminBookingsPage = () => {
           const travelDate = item.packageDate?.split('T')[0];
           const bookingDate = item.createdAt?.split('T')[0] || '2025-07-01';
           const travelers = item.customers.length;
-          
+         
           const price = item.customers.reduce(
             (sum, customer) => sum + (customer.price || 0), 
             0
@@ -72,9 +75,9 @@ const AdminBookingsPage = () => {
           (sum, b) => b.status === 'confirmed' ? sum + b.price : sum, 
           0
         );
-
+ const totalPassengers = formatted.reduce((sum, b) => sum + b.travelers, 0);
         setBookings(formatted);
-        setStats({ total, confirmed, pending, cancelled, revenue });
+        setStats({ total, confirmed, pending, cancelled, revenue ,totalPassengers});
         setLoading(false);
       } catch (error) {
         console.error("Error fetching bookings:", error);
@@ -180,18 +183,27 @@ const AdminBookingsPage = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
-        <StatCard icon={<FiPackage />} label="Total Bookings" value={stats.total} color="blue" />
-        <StatCard icon={<FiCheck />} label="Confirmed" value={stats.confirmed} color="green" />
-        <StatCard icon={<FiClock />} label="Pending" value={stats.pending} color="yellow" />
-        <StatCard icon={<FiX />} label="Cancelled" value={stats.cancelled} color="red" />
-        <StatCard 
-          icon={<FiDollarSign />} 
-          label="Revenue" 
-          value={`₹${stats.revenue.toLocaleString()}`} 
-          color="purple" 
-        />
-      </div>
+     
+
+<div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
+  <StatCard icon={<FiPackage />} label="Total Bookings" value={stats.total} color="blue" />
+  <StatCard icon={<FiCheck />} label="Confirmed" value={stats.confirmed} color="green" />
+  <StatCard icon={<FiClock />} label="Pending" value={stats.pending} color="yellow" />
+  <StatCard icon={<FiX />} label="Cancelled" value={stats.cancelled} color="red" />
+  {/* <StatCard 
+    icon={<FiDollarSign />} 
+    label="Revenue" 
+    value={`₹${stats.revenue.toLocaleString()}`} 
+    color="purple" 
+  /> */}
+  <StatCard 
+    icon={<FiUsers />} 
+    label="Total Passengers" 
+    value={stats.totalPassengers} 
+    color="teal" 
+  />
+</div>
+
 
       <div className="bg-white rounded-xl shadow mb-8">
         <div className="p-4 border-b border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center">

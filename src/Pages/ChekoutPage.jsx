@@ -20,7 +20,7 @@ const [previewImage, setPreviewImage] = useState(null);
 
 
   const totalAmount = advancePayment
- const upiLink = `upi://pay?pa=keshavanpatteri2000-1@oksbi&pn=Vaidehi Holidays&am=${totalAmount}&cu=INR&tn=Advance Booking Payment
+ const upiLink = `upi://pay?pa=sreeharivarikkad-2@oksbi&pn=Vaidehi Holidays&am=${totalAmount}&cu=INR&tn=Advance Booking Payment
 `;
 
 
