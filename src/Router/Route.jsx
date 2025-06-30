@@ -25,6 +25,7 @@ import AdminBusPassengers from '../Pages/admin/AdminBusPassengers'
 import AllPackages from '../Pages/admin/AllPackages'
 import { AdminExpense } from '../Pages/admin/AdminExpense'
 import ToursPage from '../Pages/ToursPage'
+import EditPackage from '../Pages/admin/EditPackage'
 
 
 export const router=createBrowserRouter([
@@ -99,6 +100,10 @@ export const router=createBrowserRouter([
 {
                 path: "package",
                 element: < CreatePackageForm/>
+            },
+            {
+                path: "editpackage/:id",
+                element:<EditPackage/>
             },
              {
                 path: "bookings/:id",

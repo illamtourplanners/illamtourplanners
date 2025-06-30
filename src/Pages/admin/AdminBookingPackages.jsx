@@ -27,6 +27,10 @@ const navigate=useNavigate()
     navigate(`/admin/bookings/${id}`);
    }
 
+   const editnav=(id)=>{
+    navigate(`/admin/editpackage/${id}`)
+   }
+
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -90,6 +94,12 @@ const navigate=useNavigate()
 
          className="mt-4 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
           View Details
+        </button>
+         <button
+        onClick={() => editnav(pkg._id)}
+
+         className="mt-4 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
+          Edit Details
         </button>
       </div>
     </div>
