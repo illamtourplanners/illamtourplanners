@@ -138,7 +138,7 @@ export const router=createBrowserRouter([
 
          {
         path: "/admin",
-        element:<AdminLayout/>,
+        // element:<AdminLayout/>,
         children:[
               {
                 path: "login",
