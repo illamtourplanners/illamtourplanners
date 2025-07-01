@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-
+import { axiosInstance } from '../../config/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 export const AdminLogin = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: ''
   });
-
+ const navigate=useNavigate()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -14,10 +15,25 @@ export const AdminLogin = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log('Login attempt with:', formData);
+  
     // Authentication logic would go here
+    try {
+      const response =await axiosInstance.post("/admin/login",{
+      name: formData.username,
+      password: formData.password
+    },{
+      withCredentials:true
+    })
+    console.log("dff",response.data);
+    if(response.data.success===true){
+      navigate("/admin/home")
+    }
+    } catch (error) {
+      console.log(error);
+      
+    }
   };
 
   return (

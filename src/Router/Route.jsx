@@ -26,6 +26,7 @@ import AllPackages from '../Pages/admin/AllPackages'
 import { AdminExpense } from '../Pages/admin/AdminExpense'
 import ToursPage from '../Pages/ToursPage'
 import EditPackage from '../Pages/admin/EditPackage'
+import { AdminAuth } from './protectedRoutes/AdminAuth'
 
 
 export const router=createBrowserRouter([
@@ -87,12 +88,9 @@ export const router=createBrowserRouter([
 
      {
         path: "/admin",
-        element:<AdminLayout/>,
+        element:<AdminAuth><AdminLayout/></AdminAuth>,
         children:[
-              {
-                path: "login",
-                element: <AdminLogin/>
-            },
+             
             {
                 path: "home",
                 element: <AdminHomePage/>
@@ -134,6 +132,19 @@ export const router=createBrowserRouter([
                 path: "AdminExpense",
                 element: < AdminExpense/>
             },  
+
+           
+        ]},
+
+         {
+        path: "/admin",
+        element:<AdminLayout/>,
+        children:[
+              {
+                path: "login",
+                element: <AdminLogin/>
+            },
+         
 
            
         ]},

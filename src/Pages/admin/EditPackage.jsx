@@ -63,15 +63,16 @@ const EditPackage = () => {
   };
 
   // Image handling
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setValue('image', e.target.files);
-      const reader = new FileReader();
-      reader.onloadend = () => setPreviewImage(reader.result);
-      reader.readAsDataURL(file);
-    }
-  };
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setValue('image', file); // Set only the file, not FileList
+    const reader = new FileReader();
+    reader.onloadend = () => setPreviewImage(reader.result);
+    reader.readAsDataURL(file);
+  }
+};
+
 
   // Form submission
   const onSubmit = async (data) => {
@@ -97,14 +98,22 @@ const EditPackage = () => {
     setLoading(true);
     const formData = new FormData();
 
-    // Append form fields
-    Object.entries(data).forEach(([key, val]) => {
-      if (key === 'image' && val[0]) {
-        formData.append('image', val[0]);
-      } else if (val !== undefined && val !== null) {
-        formData.append(key, val);
-      }
-    });
+   
+    
+    // Only add image if selected
+if (data.image) {
+  formData.append('image', data.image);
+}
+
+// Append all other fields except image
+Object.entries(data).forEach(([key, val]) => {
+  if (key !== 'image' && val !== undefined && val !== null) {
+    formData.append(key, val);
+  }
+});
+
+
+    
 
     // Append dynamic fields
     nonEmptyPickups.forEach(point => formData.append('pickupPoints', point));
