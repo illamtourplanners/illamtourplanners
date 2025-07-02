@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Package, BookOpen, Mail, Settings, Plus, Wallet, X, Menu,Images  } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Home, Package, BookOpen, Mail, Settings, Plus, Wallet, X, Menu,Images, LogOut  } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../config/axiosInstance';
 
 const AdminHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   const location = useLocation();
-
+const navigate = useNavigate();
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -36,6 +37,24 @@ const AdminHeader = () => {
     // { path: '/settings', icon: Settings, label: 'Settings' }
   ];
 
+
+ const handleLogout = async () => {
+    try {
+      const response = await axiosInstance.post('/admin/logout', {}, {
+        withCredentials: true, // Important if using cookies
+      });
+console.log(response);
+
+      if (response.data.success) {
+        
+        navigate('/admin/login');
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+
   return (
     <>
       {/* Header Container */}
@@ -59,6 +78,13 @@ const AdminHeader = () => {
                   <span>{item.label}</span>
                 </Link>
               ))}
+               <button
+                onClick={handleLogout}
+                className="flex items-center px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white transition-colors ml-4"
+              >
+                <LogOut className="w-5 h-5 mr-2" />
+                Logout
+              </button>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -88,6 +114,13 @@ const AdminHeader = () => {
                   <span>{item.label}</span>
                 </Link>
               ))}
+              <button
+                onClick={handleLogout}
+                className="flex items-center px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white transition-colors ml-4"
+              >
+                <LogOut className="w-5 h-5 mr-2" />
+                Logout
+              </button>
             </div>
           </div>
         )}

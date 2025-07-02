@@ -15,7 +15,7 @@ const {id}=useParams()
   useEffect(() => {
   const fetchpassengers=async()=>{
     const response=await axiosInstance.get(`/passenger/pickup-list/${id}`)
-    console.log(response.data.passengers);
+   
     setPassengers(response.data.passengers);
     
   }
