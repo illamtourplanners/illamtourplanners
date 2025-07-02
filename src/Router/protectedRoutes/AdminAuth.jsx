@@ -31,7 +31,7 @@ export const AdminAuth = ({ children }) => {
 }, [navigate]);
 
 
-  console.log("auth", user);
+ 
 
   if (loading) {
     return (

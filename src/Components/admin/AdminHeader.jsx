@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Package, BookOpen, Mail, Settings, Plus, Wallet, X, Menu } from 'lucide-react';
+import { Home, Package, BookOpen, Mail, Settings, Plus, Wallet, X, Menu,Images  } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const AdminHeader = () => {
@@ -27,12 +27,13 @@ const AdminHeader = () => {
 
   const navItems = [
     { path: '/home', icon: Home, label: 'Home' },
-    { path: '/PackagesList', icon: Package, label: 'Users' },
-    { path: '/package', icon: Plus, label: 'Packages' },
+    { path: '/PackagesList', icon: Package, label: 'Packages' },
+    { path: '/package', icon: Plus, label: 'Add Package' },
     { path: '/allPackages', icon: BookOpen, label: 'Bookings' },
-    { path: '/contact', icon: Mail, label: 'Contact' },
+    { path: '/contact', icon: Mail, label: 'Contacts' },
     { path: '/AdminExpense', icon: Wallet, label: 'Expense' },
-    { path: '/settings', icon: Settings, label: 'Settings' }
+     { path: '/postcreate', icon: Images , label: 'CreatePost' },
+    // { path: '/settings', icon: Settings, label: 'Settings' }
   ];
 
   return (

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { axiosInstance } from '../../config/axiosInstance';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const BookingDetailsPage = () => {
   
@@ -20,11 +21,14 @@ const BookingDetailsPage = () => {
       try {
         const response = await axiosInstance.get(`/checkout/bookingdetail/${id}`);
         const bookingData = response.data.data;
+ 
         console.log(bookingData);
         
         // Map API data to component structure
         const mappedBooking = {
+          _id:bookingData._id,
           id: bookingData.bookingNumber,
+
           customers: bookingData.customers,
           tourPackage: {
             name: bookingData.packageName,
@@ -50,6 +54,7 @@ const BookingDetailsPage = () => {
             advancePayment:bookingData.advancePayment,
             perperson:bookingData.totalPerPerson,
           },
+
           paymentStatus: 'Completed', // Placeholder
           paymentMethod: 'Online', // Placeholder
           paymentDate: bookingData.createdAt, // Placeholder
@@ -84,7 +89,7 @@ const BookingDetailsPage = () => {
     console.log("Notes saved:", notes);
   };
 
-console.log("dfdfd",[...new Set(bookings?.customers?.map(c => c.pickupPoint))].join(', '));
+
 
 // const allSeatNumbers = bookings?.customers
 //   ?.map((c, idx) => `Seat ${idx + 1}`)
@@ -102,20 +107,47 @@ const sendConformation=async()=>{
   packageName: bookings?.tourPackage?.name,
   travelDate: bookings?.dates?.start,
   totalPassengers:bookings?.customers?.length,
-  bookingNumber:bookings?.packageDetails?.packageNumber,
+  bookingNumber:bookings?.id,
   allCustomerNames: bookings?.customers?.map(c => c.fullName).join(', '),
   allPickupPoints: [...new Set(bookings?.customers?.map(c => c.pickupPoint))].join(', '),
   to:bookings?.packageDetails?.packageDestination,
   // seatnumbers:allSeatNumbers
 });
 console.log(response);
+if(response.success===true){
+toast.success("confrim mesasge sent scuessfully")
+
+}
+else{
+  toast.error("confrim mesasge sent failed")
+}
 
  } catch (error) {
   console.log(error);
   
  }
 }
-  
+const navigate=useNavigate()
+const handleDelete = async (bookingId,customerId) => {
+  try {
+    const confirm = window.confirm("Are you sure you want to delete this booking?");
+    if (!confirm) return;
+    console.log(bookingId,customerId);
+    
+
+   const response = await axiosInstance.delete(`/checkout/booking/${bookingId}`);
+   console.log(response);
+   
+
+    alert("Booking deleted successfully!");
+
+    navigate("/admin/allPackages")
+    // Optional: Refresh data or update local state
+  } catch (error) {
+    console.error("Delete booking failed:", error);
+    alert("Failed to delete booking.");
+  }
+};
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -199,9 +231,12 @@ console.log(response);
                 <button className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded hover:bg-green-100">
                   Print Itinerary
                 </button>
-                <button className="text-xs bg-red-50 text-red-700 px-2 py-1 rounded hover:bg-red-100">
-                  Cancel
-                </button>
+                <button
+    onClick={() => handleDelete(bookings._id,bookings.id)} // Replace `itemId` with actual ID or pass prop
+    className="text-xs bg-red-50 text-red-700 px-2 py-1 rounded hover:bg-red-100"
+  >
+    Delete This Customer
+  </button>
               </div>
             </div>
           </div>

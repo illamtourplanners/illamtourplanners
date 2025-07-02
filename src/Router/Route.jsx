@@ -27,6 +27,7 @@ import { AdminExpense } from '../Pages/admin/AdminExpense'
 import ToursPage from '../Pages/ToursPage'
 import EditPackage from '../Pages/admin/EditPackage'
 import { AdminAuth } from './protectedRoutes/AdminAuth'
+import PostCreator from '../Pages/admin/PostCreator'
 
 
 export const router=createBrowserRouter([
@@ -132,6 +133,10 @@ export const router=createBrowserRouter([
                 path: "AdminExpense",
                 element: < AdminExpense/>
             },  
+            {
+                path:"postcreate",
+                element:<PostCreator/>
+            }
 
            
         ]},
