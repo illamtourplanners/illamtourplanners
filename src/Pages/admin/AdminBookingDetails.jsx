@@ -114,13 +114,12 @@ const sendConformation=async()=>{
   // seatnumbers:allSeatNumbers
 });
 console.log(response);
-if(response.success===true){
-toast.success("confrim mesasge sent scuessfully")
+if (response.data.success === true) {
+  toast.success("Confirmation message sent successfully");
+} else {
+  toast.error("Confirmation message failed to send");
+}
 
-}
-else{
-  toast.error("confrim mesasge sent failed")
-}
 
  } catch (error) {
   console.log(error);
