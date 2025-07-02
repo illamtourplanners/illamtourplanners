@@ -1,26 +1,71 @@
-import React from 'react';
-import { FiUsers, FiMap, FiDollarSign, FiCalendar, FiSettings, FiSearch, FiPackage, FiGlobe, FiCheckCircle } from 'react-icons/fi';
+import React, { useEffect, useState } from 'react';
+import {
+  FiUsers, FiMap, FiDollarSign, FiCalendar, FiSettings,
+  FiSearch, FiPackage, FiGlobe, FiCheckCircle
+} from 'react-icons/fi';
+import { axiosInstance } from '../../config/axiosInstance';
 
 export default function TourAdminHomePage() {
-  // Tour package metrics
-  const stats = [
-    { icon: <FiUsers size={24} />, title: "Total Travelers", value: "1,892", change: "+8%", color: "text-blue-500", bg: "bg-blue-50" },
-    { icon: <FiMap size={24} />, title: "Active Tours", value: "42", change: "+3", color: "text-purple-500", bg: "bg-purple-50" },
-    { icon: <FiDollarSign size={24} />, title: "Revenue", value: "$86,420", change: "+14%", color: "text-green-500", bg: "bg-green-50" },
-    { icon: <FiCalendar size={24} />, title: "Upcoming Bookings", value: "317", change: "+22", color: "text-orange-500", bg: "bg-orange-50" }
-  ];
+  const [recentActivities, setRecentActivities] = useState([]);
 
-  // Recent bookings data
-  const recentBookings = [
-    { id: "#TB-1257", traveler: "Emma Johnson", tour: "Bali Adventure", date: "15 Jul 2023", status: "confirmed" },
-    { id: "#TB-1256", traveler: "Michael Chen", tour: "European Explorer", date: "18 Jul 2023", status: "pending" },
-    { id: "#TB-1255", traveler: "Sarah Williams", tour: "Japan Cultural", date: "22 Jul 2023", status: "completed" },
-    { id: "#TB-1254", traveler: "David Miller", tour: "Safari Kenya", date: "25 Jul 2023", status: "cancelled" }
+  const [dashboardData, setDashboardData] = useState({
+    totalCustomers: 0,
+    totalRevenue: 0,
+    upcomingBookings: 0,
+    allActivePackages: 0,
+    recentBookings: []
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get("/admin/data", { withCredentials: true });
+        setDashboardData(response.data);
+         setRecentActivities(response.data.recentActivities || []);
+      } catch (error) {
+        console.error("Dashboard data fetch failed:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const stats = [
+    {
+      icon: <FiUsers size={24} />,
+      title: "Total Travelers",
+      value: dashboardData.totalCustomers,
+      change: "+8%",
+      color: "text-blue-500",
+      bg: "bg-blue-50"
+    },
+    {
+      icon: <FiMap size={24} />,
+      title: "Active Tours",
+      value: dashboardData.allActivePackages,
+      change: "+3",
+      color: "text-purple-500",
+      bg: "bg-purple-50"
+    },
+    {
+      icon: <FiDollarSign size={24} />,
+      title: "Revenue",
+      value: `₹${dashboardData.totalRevenue.toLocaleString()}`,
+      change: "+14%",
+      color: "text-green-500",
+      bg: "bg-green-50"
+    },
+    {
+      icon: <FiCalendar size={24} />,
+      title: "Upcoming Bookings",
+      value: dashboardData.upcomingBookings,
+      change: "+22",
+      color: "text-orange-500",
+      bg: "bg-orange-50"
+    }
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50 ">
-      {/* Main Content */}
+    <div className="flex min-h-screen bg-gray-50">
       <div className="flex-1 p-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -51,7 +96,7 @@ export default function TourAdminHomePage() {
           ))}
         </div>
 
-        {/* Recent Bookings */}
+        {/* Recent Bookings Table */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-gray-800">Recent Bookings</h2>
@@ -71,12 +116,14 @@ export default function TourAdminHomePage() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {recentBookings.map((booking, index) => (
+                {dashboardData.recentBookings.map((booking, index) => (
                   <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{booking.id}</td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{booking.traveler}</td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{booking.tour}</td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{booking.date}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{booking.bookingNumber}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{booking.customers?.[0]?.fullName || 'N/A'}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{booking.packageName}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(booking.packageDate).toLocaleDateString()}
+                    </td>
                     <td className="px-4 py-4 whitespace-nowrap">
                       <span className={`px-2 py-1 text-xs rounded-full ${
                         booking.status === 'confirmed' ? 'bg-blue-100 text-blue-800' :
@@ -94,44 +141,50 @@ export default function TourAdminHomePage() {
           </div>
         </div>
 
-        {/* Activity and Quick Actions */}
+        {/* Quick Actions and Recent Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Activity */}
           <div className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">Recent Activity</h2>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="p-2 bg-blue-100 rounded-full mr-3">
-                  <FiCheckCircle className="text-blue-500" size={16} />
-                </div>
-                <div>
-                  <p className="font-medium text-gray-800">Booking #TB-1268 confirmed</p>
-                  <p className="text-sm text-gray-500">Sophia Rodriguez - Greek Islands Cruise</p>
-                  <p className="text-xs text-gray-400">10 minutes ago</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="p-2 bg-purple-100 rounded-full mr-3">
-                  <FiPackage className="text-purple-500" size={16} />
-                </div>
-                <div>
-                  <p className="font-medium text-gray-800">New tour added</p>
-                  <p className="text-sm text-gray-500">Norwegian Fjords Expedition</p>
-                  <p className="text-xs text-gray-400">2 hours ago</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="p-2 bg-green-100 rounded-full mr-3">
-                  <FiUsers className="text-green-500" size={16} />
-                </div>
-                <div>
-                  <p className="font-medium text-gray-800">Traveler registered</p>
-                  <p className="text-sm text-gray-500">Robert Kim - Premium member</p>
-                  <p className="text-xs text-gray-400">5 hours ago</p>
-                </div>
-              </div>
-            </div>
+  <h2 className="text-xl font-semibold text-gray-800 mb-6">Recent Activity</h2>
+  <div className="space-y-4">
+    {recentActivities.map((activity, index) => {
+      let iconComponent;
+      let bgColor;
+
+      switch (activity.icon) {
+        case "check":
+          iconComponent = <FiCheckCircle className="text-blue-500" size={16} />;
+          bgColor = "bg-blue-100";
+          break;
+        case "package":
+          iconComponent = <FiPackage className="text-purple-500" size={16} />;
+          bgColor = "bg-purple-100";
+          break;
+        case "user":
+          iconComponent = <FiUsers className="text-green-500" size={16} />;
+          bgColor = "bg-green-100";
+          break;
+        default:
+          iconComponent = <FiGlobe className="text-gray-500" size={16} />;
+          bgColor = "bg-gray-100";
+      }
+
+      return (
+        <div key={index} className="flex items-start">
+          <div className={`p-2 rounded-full mr-3 ${bgColor}`}>
+            {iconComponent}
           </div>
+          <div>
+            <p className="font-medium text-gray-800">{activity.title}</p>
+            <p className="text-sm text-gray-500">{activity.subtitle}</p>
+            <p className="text-xs text-gray-400">{activity.timeAgo}</p>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
 
           {/* Quick Actions */}
           <div className="bg-white rounded-xl shadow-sm p-6">
