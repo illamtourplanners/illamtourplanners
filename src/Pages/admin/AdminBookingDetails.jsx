@@ -11,6 +11,7 @@ const BookingDetailsPage = () => {
   const [activeTab, setActiveTab] = useState('details');
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   // const [notes, setNotes] = useState(bookings?.notes);
+  const [loading, setLoading] = useState(false);
  const [bookings, setBooking] = useState(null);
 
   
@@ -96,7 +97,7 @@ const BookingDetailsPage = () => {
 //   .join(', ');
 const sendConformation=async()=>{
   console.log("df");
-  
+  setLoading(true);
  try {
   const response = await axiosInstance.post("/checkout/confirm", {
    bookingId: id,
@@ -120,11 +121,13 @@ if (response.data.success === true) {
   toast.error("Confirmation message failed to send");
 }
 
-
  } catch (error) {
   console.log(error);
   
  }
+ finally {
+      setLoading(false);
+    }
 }
 const navigate=useNavigate()
 const handleDelete = async (bookingId,customerId) => {
@@ -222,11 +225,16 @@ const handleDelete = async (bookingId,customerId) => {
               <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</h3>
               <div className="flex gap-2 mt-2">
                 <button
-                onClick={() => sendConformation()}
-
-                 className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded hover:bg-blue-100">
-                  Send Confirmation
-                </button>
+      onClick={sendConformation}
+      disabled={loading}
+      className={`text-xs px-2 py-1 rounded ${
+        loading
+          ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+          : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+      }`}
+    >
+      {loading ? 'Sending...' : 'Send Confirmation'}
+    </button>
                 <button className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded hover:bg-green-100">
                   Print Itinerary
                 </button>
