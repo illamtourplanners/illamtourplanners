@@ -33,11 +33,24 @@ export default function TravelGallery() {
     fetchTours();
   }, []);
 
-  const toggleFavorite = (postId) => {
+  const toggleFavorite = async(postId) => {
     setFavorites(prev => ({
       ...prev,
       [postId]: !prev[postId]
     }));
+   try {
+     const response= await axiosInstance.post(`/tour/like/${postId}`);
+
+     setPosts(prevPosts =>
+      prevPosts.map(post =>
+        post._id === postId ? { ...post, likes: response.data.likes } : post
+      )
+    );
+   } catch (error) {
+    console.log(error);
+    
+   }
+    
   };
 
   const patternSequences = [
@@ -251,10 +264,12 @@ const downloadImageAsPng = (url, filename = 'download.png') => {
                         >
                           <Heart className={`w-6 h-6 ${favorites[post._id] ? 'fill-current' : ''}`} />
                         </button>
-                        
-                        <button className="p-4 bg-emerald-100 text-emerald-600 rounded-full hover:bg-emerald-200 transition-all duration-300 transform hover:scale-110 shadow-lg">
+                        <span className="text-sm text-gray-600 font-medium">
+    {post.likes || 0} Likes
+  </span>
+                        {/* <button className="p-4 bg-emerald-100 text-emerald-600 rounded-full hover:bg-emerald-200 transition-all duration-300 transform hover:scale-110 shadow-lg">
                           <Share2 className="w-6 h-6" />
-                        </button>
+                        </button> */}
                       </motion.div>
                     </div>
 
