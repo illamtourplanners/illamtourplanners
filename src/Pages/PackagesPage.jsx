@@ -1,21 +1,34 @@
-// src/components/PackagesPage.jsx
+
 import React, { useEffect, useState, useRef } from 'react';
-import { GiSuitcase, GiWorld, GiPearlNecklace } from 'react-icons/gi';
-import { FaStar, FaMapMarkerAlt, FaCalendarAlt, FaHeart, FaRegHeart } from 'react-icons/fa';
-import { IoIosFlash } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../config/axiosInstance';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Star, 
+  MapPin, 
+  Calendar, 
+  Heart, 
+  Clock, 
+  Users, 
+  Sparkles,
+  ArrowRight,
+  Globe,
+  Award,
+  CheckCircle,
+  ChevronDown,
+  ChevronUp
+} from 'lucide-react';
 
 export const PackagesPage = () => {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
   const [favorites, setFavorites] = useState(new Set());
   const [expandedPackages, setExpandedPackages] = useState(new Set());
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
-  const testimonialRef = useRef(null);
+
+  // ... keep existing code (useEffect hooks and data fetching logic)
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -60,317 +73,344 @@ export const PackagesPage = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800">
+      <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-emerald-50">
         <motion.div
           initial={{ rotate: 0 }}
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="relative"
+          className="relative mb-8"
         >
-          <div className="rounded-full h-20 w-20 border-t-4 border-b-4 border-teal-500"></div>
-          <GiSuitcase className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-teal-500 text-2xl" />
+          <div className="rounded-full h-24 w-24 border-4 border-emerald-200 border-t-emerald-600 shadow-lg"></div>
+          <Globe className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-emerald-600 w-8 h-8" />
         </motion.div>
-        <motion.span 
+        <motion.div
           initial={{ opacity: 0.5 }}
           animate={{ opacity: 1 }}
           transition={{ repeat: Infinity, repeatType: "reverse", duration: 1.5 }}
-          className="mt-6 text-xl font-medium text-gray-700 dark:text-gray-300"
+          className="text-center"
         >
-          Discovering exotic destinations...
-        </motion.span>
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">Crafting Your Perfect Journey</h3>
+          <p className="text-gray-600">Discovering premium destinations worldwide...</p>
+        </motion.div>
       </div>
     );
   }
 
   const testimonials = [
     {
-      text: `"Vaidehi Holidays gave me an authentic taste of Kerala’s rich culture — truly an unforgettable experience."`,
-      author: "Unnikrishnan",
-      role: "Luxury Traveler"
+      text: "Vaidehi Holidays exceeded every expectation. The attention to detail and personalized service made our Kerala journey absolutely magical.",
+      author: "Unnikrishnan Menon",
+      role: "Luxury Traveler",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
     },
     {
-      text: `"It wasn’t just a trip — it was a deep dive into Kerala’s soul. Vaidehi Holidays made it magical."`,
-      author: "Priya Menon",
-      role: "Cultural Explorer"
+      text: "From the moment we landed to our departure, every detail was flawlessly orchestrated. This wasn't just a trip—it was a transformative experience.",
+      author: "Priya Sharma",
+      role: "Cultural Explorer",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1494790108755-2616b332c9a9?w=100&h=100&fit=crop&crop=face"
     },
     {
-      text: `"The cultural immersion was beyond anything I expected. Vaidehi Holidays showed me the real Kerala."`,
+      text: "The cultural immersion was beyond anything I expected. Vaidehi Holidays showed me the authentic soul of Kerala through experiences money can't typically buy.",
       author: "Arjun Kumar",
-      role: "Adventure Seeker"
+      role: "Adventure Seeker", 
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
     }
   ];
 
+  const filterOptions = [
+    { id: 'all', label: 'All Packages', icon: Globe },
+    { id: 'premium', label: 'Premium', icon: Award },
+    { id: 'cultural', label: 'Cultural', icon: Sparkles },
+    { id: 'adventure', label: 'Adventure', icon: Users }
+  ];
+
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-gray-200' : 'bg-gradient-to-b from-blue-50 to-teal-50 text-gray-800'}`}>
-      
-
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
       {/* Hero Section */}
-      <section className="relative py-28 md:py-36 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center bg-fixed opacity-90"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-700/80 to-blue-800/80"></div>
-
+      <section className="relative py-32 md:py-40 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center bg-fixed"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-purple-900/80 to-emerald-900/90"></div>
+        
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-5xl mx-auto"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
-              Discover <span className="text-amber-300">Luxury</span> Travel
+            <div className="flex justify-center mb-6">
+              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+                <div className="flex items-center space-x-2 text-amber-300">
+                  <Sparkles className="w-4 h-4" />
+                  <span className="text-sm font-medium">Premium Travel Experiences</span>
+                  <Sparkles className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white drop-shadow-2xl">
+              Discover <span className="bg-gradient-to-r from-amber-300 via-orange-400 to-amber-300 bg-clip-text text-transparent">Luxury</span> Travel
             </h1>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-100 mb-10 font-light">
-              Immerse yourself in extraordinary journeys crafted by our travel artisans
+            
+            <p className="text-xl md:text-2xl max-w-4xl mx-auto text-blue-100 mb-12 font-light leading-relaxed">
+              Immerse yourself in extraordinary journeys crafted by our travel artisans. 
+              Every detail curated for the discerning traveler seeking authentic luxury.
             </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+              
+              
+              <div className="flex items-center space-x-4 text-white/80">
+                <div className="flex items-center space-x-1">
+                  <Star className="w-5 h-5 text-amber-400 fill-current" />
+                  <span className="font-medium">4.9/5</span>
+                </div>
+                <div className="w-px h-6 bg-white/30"></div>
+                <div className="flex items-center space-x-1">
+                  <Users className="w-5 h-5" />
+                  <span>500+ Happy Travelers</span>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
 
+      {/* Filter Section */}
+      
+
       {/* Packages Section */}
-      <section className="py-16 md:py-24 relative z-20">
+      <section className="py-20 md:py-32">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <motion.h2 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-6 relative inline-block"
+              className="max-w-4xl mx-auto"
             >
-              <span className="relative z-10">Curated Travel Experiences</span>
-              <span className="absolute -bottom-2 left-0 w-full h-3 bg-amber-200/50 z-0"></span>
-            </motion.h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Each package is a masterpiece, blending luxury, adventure, and cultural immersion
-            </p>
+              <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                Curated Travel Experiences
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-blue-600 mx-auto mb-6 rounded-full"></div>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Each package is a masterpiece, blending luxury, adventure, and cultural immersion into unforgettable journeys
+              </p>
+            </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {packages.map((pkg, index) => (
-              <motion.div
-                key={pkg._id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                onClick={() => redirect(pkg._id)}
-                className={`group rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300 cursor-pointer ${darkMode ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:bg-white'} shadow-lg hover:shadow-2xl`}
-              >
-                <div className="relative h-72 overflow-hidden">
-                  <img
-                    src={pkg.image}
-                    alt={pkg.PackageName}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "https://via.placeholder.com/400x300?text=Travel+Image";
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 xl:gap-10">
+            <AnimatePresence>
+              {packages.map((pkg, index) => (
+                <motion.div
+                  key={pkg._id}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  onClick={() => redirect(pkg._id)}
+                  className="group bg-white/90 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer border border-white/50"
+                >
+                  <div className="relative h-80 overflow-hidden">
+                    <img
+                      src={pkg.image}
+                      alt={pkg.PackageName}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://via.placeholder.com/400x300?text=Premium+Destination";
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
 
-                  <div className="absolute top-4 right-4 z-10">
-                    <button
-                      onClick={(e) => toggleFavorite(pkg._id, e)}
-                      className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-md hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors"
-                      aria-label={favorites.has(pkg._id) ? "Remove from favorites" : "Add to favorites"}
-                    >
-                      {favorites.has(pkg._id) ?
-                        <motion.div
-                          initial={{ scale: 0.8 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                        >
-                          <FaHeart className="text-amber-500" />
-                        </motion.div> :
-                        <FaRegHeart className="text-gray-700 dark:text-gray-300" />
-                      }
-                    </button>
-                  </div>
-
-                  <div className="absolute bottom-4 left-4 flex items-center">
-                    <div className="px-3 py-1 bg-amber-500 text-white text-sm font-semibold rounded-full mr-2 flex items-center">
-                      <IoIosFlash className="mr-1" /> Featured
-                    </div>
-                    <div className="px-3 py-1 bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white text-sm font-semibold rounded-full">
-                      ${pkg.PricePerPerson} <span className="font-normal">/person</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                      {pkg.PackageName}
-                    </h3>
-                    <div className="flex items-center text-amber-400">
-                      {[...Array(5)].map((_, i) => (
-                        <FaStar key={i} className="text-sm" />
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <div className="flex items-start p-3 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-300 shadow-sm hover:shadow-md">
-                      <div className="p-1.5 mr-3 bg-teal-100/80 dark:bg-teal-900/30 rounded-lg">
-                        <FaMapMarkerAlt className="text-teal-500 dark:text-teal-400" />
+                    <div className="absolute top-6 left-6 right-6 flex justify-between items-start">
+                      <div className="flex space-x-2">
+                        <div className="px-3 py-1 bg-amber-500/90 backdrop-blur-sm text-white text-sm font-semibold rounded-full flex items-center space-x-1">
+                          <Sparkles className="w-3 h-3" />
+                          <span>Featured</span>
+                        </div>
+                        <div className="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold rounded-full">
+                          Premium
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-1">
-                          Destination Feature
+                      <button
+                        onClick={(e) => toggleFavorite(pkg._id, e)}
+                        className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all duration-300"
+                      >
+                        <Heart 
+                          className={`w-5 h-5 transition-colors ${
+                            favorites.has(pkg._id) 
+                              ? 'text-red-500 fill-current' 
+                              : 'text-gray-600 hover:text-red-400'
+                          }`} 
+                        />
+                      </button>
+                    </div>
+
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <div className="flex items-center justify-between">
+                        <div className="text-white">
+                          <h3 className="text-2xl font-bold mb-1 drop-shadow-lg">{pkg.PackageName}</h3>
+                          <div className="flex items-center space-x-4 text-sm text-white/90">
+                            <div className="flex items-center space-x-1">
+                              <Clock className="w-4 h-4" />
+                              <span>{pkg.day || 'N/A'} days</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Users className="w-4 h-4" />
+                              <span>Small Groups</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-3xl font-bold text-white drop-shadow-lg">
+                            ${pkg.PricePerPerson}
+                          </div>
+                          <div className="text-white/80 text-sm">per person</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 text-amber-400 fill-current" />
+                        ))}
+                        <span className="text-sm text-gray-600 ml-2">(4.9)</span>
+                      </div>
+                      <div className="flex items-center space-x-1 text-emerald-600">
+                        <MapPin className="w-4 h-4" />
+                        <span className="text-sm font-medium">Premium Location</span>
+                      </div>
+                    </div>
+
+                    <div className="mb-6">
+                      <div className="p-4 bg-gradient-to-r from-blue-50 to-emerald-50 rounded-2xl border border-blue-100">
+                        <h4 className="text-sm font-semibold uppercase tracking-wider text-emerald-700 mb-2 flex items-center space-x-1">
+                          <Sparkles className="w-3 h-3" />
+                          <span>Experience Highlights</span>
                         </h4>
-                        <p className="text-sm text-gray-700 dark:text-gray-300">
+                        <p className="text-gray-700 text-sm leading-relaxed">
                           {pkg.description}
                         </p>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <div className="flex items-start p-3 bg-white/70 dark:bg-gray-800/70 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-                      <div className="p-1.5 mr-3 bg-amber-100/80 dark:bg-amber-900/30 rounded-lg flex-shrink-0">
-                        <GiSuitcase className="text-amber-600 dark:text-amber-400" />
-                      </div>
-                      <div className="w-full">
-                        <div className="flex justify-between items-center w-full mb-2">
-                          <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                            Package Includes
+                    
+                    <div className="mb-6">
+                      <div className="p-4 bg-white/80 rounded-2xl border border-gray-100 shadow-sm">
+                        <div className="flex justify-between items-center mb-3">
+                          <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-700 flex items-center space-x-1">
+                            <CheckCircle className="w-3 h-3 text-emerald-600" />
+                            <span>Inclusions</span>
                           </h4>
                           <button 
                             onClick={(e) => toggleExpand(pkg._id, e)}
-                            className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
+                            className="text-emerald-600 hover:text-emerald-700 transition-colors"
                           >
-                            {expandedPackages.has(pkg._id) ? 'Show Less' : 'Show More'}
+                            {expandedPackages.has(pkg._id) ? 
+                              <ChevronUp className="w-4 h-4" /> : 
+                              <ChevronDown className="w-4 h-4" />
+                            }
                           </button>
                         </div>
                         
-                        <ul className="space-y-1.5">
+                        <ul className="space-y-2">
                           {Array.isArray(pkg.includes) ? (
                             pkg.includes
-                              .slice(0, expandedPackages.has(pkg._id) ? pkg.includes.length : 2)
+                              .slice(0, expandedPackages.has(pkg._id) ? pkg.includes.length : 3)
                               .map((item, index) => (
-                                <li key={index} className="flex items-start">
-                                  <svg className="h-3.5 w-3.5 text-amber-500 dark:text-amber-400 mt-0.5 mr-2 flex-shrink-0"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M5 13l4 4L19 7" />
-                                  </svg>
-                                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                                    {item}
-                                  </span>
+                                <li key={index} className="flex items-start space-x-2">
+                                  <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                                  <span className="text-sm text-gray-700">{item}</span>
                                 </li>
                               ))
                           ) : (
-                            <li className="flex items-start">
-                              <svg className="h-3.5 w-3.5 text-amber-500 dark:text-amber-400 mt-0.5 mr-2 flex-shrink-0"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M5 13l4 4L19 7" />
-                              </svg>
-                              <span className="text-sm text-gray-700 dark:text-gray-300">
-                                {pkg.includes || 'No inclusions listed'}
+                            <li className="flex items-start space-x-2">
+                              <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-sm text-gray-700">
+                                {pkg.includes || 'Premium inclusions available'}
                               </span>
                             </li>
                           )}
                         </ul>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                      <FaCalendarAlt className="mr-2 text-teal-500" />
-                      <span>{pkg.day || 'N/A'} days</span>
+                    
+                    <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+                      <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="w-4 h-4 text-emerald-500" />
+                          <span>Flexible Dates</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Award className="w-4 h-4 text-amber-500" />
+                          <span>Award Winner</span>
+                        </div>
+                      </div>
+                      <motion.button 
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+                      >
+                        <span>Book Now</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </motion.button>
                     </div>
-                    <motion.button 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white font-medium rounded-full text-sm shadow-md hover:shadow-lg transition-shadow"
-                    >
-                      Book Now
-                    </motion.button>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Luxury CTA Section */}
-      <section className="py-20 bg-[url('https://images.unsplash.com/photo-1539635278303-d4002c07eae3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-fixed bg-center relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-teal-900/80"></div>
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="inline-block p-3 mb-6 rounded-full bg-white/10 backdrop-blur-sm border border-white/20"
-          >
-            <GiWorld className="text-3xl text-amber-300" />
-          </motion.div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-            Ready for Your <span className="text-amber-300">Dream</span> Vacation?
-          </h2>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
-            Our concierge team will craft a completely personalized experience just for you
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <motion.a 
-              href='/contact'
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <button className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl">
-                Book a Consultation
-              </button>
-            </motion.a>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-emerald-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center opacity-10"></div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Travelers <span className="text-teal-500">Love Us</span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Travelers <span className="text-amber-300">Love Us</span>
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
               Don't just take our word for it - hear from our globetrotting guests
             </p>
           </div>
 
-          <div className="relative max-w-4xl mx-auto">
-            <div className="overflow-hidden rounded-2xl bg-white dark:bg-gray-750 shadow-xl">
+          <div className="relative max-w-5xl mx-auto">
+            <div className="overflow-hidden rounded-3xl bg-white/10 backdrop-blur-lg shadow-2xl border border-white/20">
               <div 
-                ref={testimonialRef}
-                className="flex transition-transform duration-500 ease-in-out"
+                className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
               >
                 {testimonials.map((testimonial, index) => (
                   <div 
                     key={index} 
-                    className="min-w-full p-8"
+                    className="min-w-full p-12"
                   >
                     <div className="flex flex-col items-center text-center">
-                      <div className="flex mb-4">
-                        {[...Array(5)].map((_, i) => (
-                          <FaStar key={i} className="text-amber-400 mx-0.5" />
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.author}
+                        className="w-20 h-20 rounded-full mb-6 border-4 border-white/20 shadow-lg"
+                      />
+                      <div className="flex mb-6">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} className="w-6 h-6 text-amber-400 fill-current mx-0.5" />
                         ))}
                       </div>
-                      <p className="text-lg italic text-gray-700 dark:text-gray-300 mb-6 max-w-2xl">
+                      <p className="text-xl italic text-white mb-8 max-w-3xl leading-relaxed">
                         {testimonial.text}
                       </p>
                       <div>
-                        <h4 className="font-semibold text-lg">{testimonial.author}</h4>
-                        <p className="text-gray-500 dark:text-gray-400">{testimonial.role}</p>
+                        <h4 className="font-bold text-xl text-white mb-1">{testimonial.author}</h4>
+                        <p className="text-blue-200">{testimonial.role}</p>
                       </div>
                     </div>
                   </div>
@@ -378,17 +418,16 @@ export const PackagesPage = () => {
               </div>
             </div>
 
-            <div className="flex justify-center mt-8 space-x-2">
+            <div className="flex justify-center mt-8 space-x-3">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentTestimonial(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
+                  className={`w-4 h-4 rounded-full transition-all duration-300 ${
                     currentTestimonial === index 
-                      ? 'bg-teal-500 w-6' 
-                      : 'bg-gray-300 dark:bg-gray-600'
+                      ? 'bg-amber-400 w-8' 
+                      : 'bg-white/30 hover:bg-white/50'
                   }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}
             </div>
@@ -396,8 +435,50 @@ export const PackagesPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-  
+      {/* CTA Section */}
+      <section className="py-24 bg-gradient-to-br from-emerald-50 to-blue-50">
+        <div className="container mx-auto px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="inline-block p-4 mb-8 rounded-full bg-gradient-to-r from-emerald-100 to-blue-100 border border-emerald-200">
+              <Globe className="w-12 h-12 text-emerald-600" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+              Ready for Your <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">Dream</span> Vacation?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+              Our concierge team will craft a completely personalized experience just for you. 
+              Let's turn your travel dreams into extraordinary memories.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <motion.a 
+                href='/contact'
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <button className="px-8 py-4 bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-bold rounded-full transition-all duration-300 shadow-xl hover:shadow-2xl flex items-center space-x-2">
+                  <span>Book a Consultation</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </motion.a>
+              <motion.a 
+                href='/about'
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <button className="px-8 py-4 border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl">
+                  Learn More About Us
+                </button>
+              </motion.a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 };

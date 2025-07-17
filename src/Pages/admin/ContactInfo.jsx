@@ -1,75 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaSearch, FaEnvelope, FaPhone, FaUser, FaCalendarAlt, FaEye, FaTrash, FaReply, FaFilter, FaRegStar, FaStar } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-
+import { axiosInstance } from '../../config/axiosInstance';
+import { format } from 'date-fns';
 const ContactInfoAdmin = () => {
-  const [contacts, setContacts] = useState([
-    {
-      id: 1,
-      name: 'John Smith',
-      email: 'john.smith@example.com',
-      phone: '+1 (555) 123-4567',
-      subject: 'Package Inquiry',
-      message: 'I would like more information about your premium Bali package. Could you send me the detailed itinerary?',
-      date: '2023-10-15',
-      time: '14:30',
-      status: 'new',
-      priority: 'high',
-      read: false
-    },
-    {
-      id: 2,
-      name: 'Emma Johnson',
-      email: 'emma.j@workmail.com',
-      phone: '+1 (444) 987-6543',
-      subject: 'Booking Modification',
-      message: 'I need to change the dates for my Maldives trip booked on Oct 10. How can I proceed?',
-      date: '2023-10-14',
-      time: '09:15',
-      status: 'in-progress',
-      priority: 'medium',
-      read: true
-    },
-    {
-      id: 3,
-      name: 'Robert Chen',
-      email: 'robert.chen@business.com',
-      phone: '+1 (333) 456-7890',
-      subject: 'Group Booking',
-      message: 'Our company is planning a retreat for 25 people. Do you offer corporate discounts?',
-      date: '2023-10-13',
-      time: '16:45',
-      status: 'completed',
-      priority: 'high',
-      read: true
-    },
-    {
-      id: 4,
-      name: 'Sarah Williams',
-      email: 'sarah.w@example.org',
-      phone: '+1 (222) 111-2222',
-      subject: 'Cancellation Request',
-      message: 'Unfortunately I need to cancel my Santorini trip due to unforeseen circumstances.',
-      date: '2023-10-12',
-      time: '11:20',
-      status: 'new',
-      priority: 'medium',
-      read: false
-    },
-    {
-      id: 5,
-      name: 'Michael Brown',
-      email: 'michael.b@traveler.com',
-      phone: '+1 (777) 888-9999',
-      subject: 'Special Requirements',
-      message: 'I have dietary restrictions and mobility concerns. Can your Thailand tour accommodate these?',
-      date: '2023-10-10',
-      time: '15:10',
-      status: 'in-progress',
-      priority: 'high',
-      read: true
-    }
-  ]);
+  const [contacts, setContacts] = useState([]);
+
+useEffect(()=>{
+const fetchMessages=async()=>{
+  const response=await axiosInstance.get('/contact/')
+  console.log(response.data.data);
+  setContacts(response.data.data);
+}
+fetchMessages();
+},[])
+
+
+
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -80,7 +27,7 @@ const ContactInfoAdmin = () => {
   // Filter contacts based on search and status
   const filteredContacts = contacts.filter(contact => {
     const matchesSearch = 
-      contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.FullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.subject.toLowerCase().includes(searchTerm.toLowerCase());
     
@@ -238,7 +185,7 @@ const ContactInfoAdmin = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredContacts.map((contact) => (
+                {filteredContacts.reverse().map((contact) => (
                   <motion.tr 
                     key={contact.id}
                     className={`hover:bg-gray-50 ${!contact.read ? 'bg-blue-50' : ''}`}
@@ -264,7 +211,7 @@ const ContactInfoAdmin = () => {
                       <div className="text-sm text-gray-500 truncate max-w-xs">{contact.message}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{contact.date}</div>
+                      <div className="text-sm text-gray-900"> {format(new Date(contact.createdAt), 'PPP p')}</div>
                       <div className="text-sm text-gray-500">{contact.time}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

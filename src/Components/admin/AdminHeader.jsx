@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Home, Package, BookOpen, Mail, Settings, Plus, Wallet, X, Menu,Images, LogOut  } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../config/axiosInstance';
-
+import { Switch } from '@headlessui/react';
 const AdminHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   const location = useLocation();
+    const [toggleUserMode, setToggleUserMode] = useState(false);
 const navigate = useNavigate();
   useEffect(() => {
     const handleResize = () => {
@@ -32,7 +33,7 @@ const navigate = useNavigate();
     { path: '/package', icon: Plus, label: 'Add Package' },
     { path: '/allPackages', icon: BookOpen, label: 'Bookings' },
     { path: '/contact', icon: Mail, label: 'Contacts' },
-    { path: '/AdminExpense', icon: Wallet, label: 'Expense' },
+    { path: '/packfolder', icon: Wallet, label: 'Expense' },
      { path: '/postcreate', icon: Images , label: 'CreatePost' },
     // { path: '/settings', icon: Settings, label: 'Settings' }
   ];
@@ -54,6 +55,11 @@ console.log(response);
     }
   };
 
+  useEffect(() => {
+    if (toggleUserMode) {
+      navigate('/');
+    }
+  }, [toggleUserMode, navigate]);
 
   return (
     <>
@@ -86,7 +92,22 @@ console.log(response);
                 Logout
               </button>
             </nav>
-
+<div className="ml-4 flex items-center space-x-2">
+          <span className="text-sm">User Mode</span>
+          <Switch
+            checked={toggleUserMode}
+            onChange={setToggleUserMode}
+            className={`${
+              toggleUserMode ? 'bg-blue-600' : 'bg-gray-400'
+            } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+          >
+            <span
+              className={`${
+                toggleUserMode ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+            />
+          </Switch>
+        </div>
             {/* Mobile Menu Button */}
             <button
               className="lg:hidden p-2 rounded-md text-white hover:bg-gray-700 focus:outline-none"

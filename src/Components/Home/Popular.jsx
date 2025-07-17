@@ -28,7 +28,7 @@ const [packages, setPackages] = useState([]);
 
 
   return (
-    <section className="py-20 bg-gray-50 px-4">
+    <section className="py-20 bg-gray-50 px-4" >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -36,7 +36,7 @@ const [packages, setPackages] = useState([]);
             DISCOVER NEPAL
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Latest<span className="text-emerald-600">Packages</span>
+            Latest<span className="text-emerald-600"> Packages</span>
           </h2>
           <p className="max-w-2xl mx-auto text-gray-600 text-lg">
             Curated journeys that showcase the best of our region's natural beauty and cultural heritage
@@ -44,7 +44,7 @@ const [packages, setPackages] = useState([]);
         </div>
 
         {/* Tours Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id='package'>
           {packages.slice(0, 3).map((tour) => (
             <div 
   key={tour.id}

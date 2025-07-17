@@ -28,6 +28,9 @@ import ToursPage from '../Pages/ToursPage'
 import EditPackage from '../Pages/admin/EditPackage'
 import { AdminAuth } from './protectedRoutes/AdminAuth'
 import PostCreator from '../Pages/admin/PostCreator'
+import BookingDetails from '../Pages/BookingDetails'
+import FolderStructure from '../Components/admin/FolderScructure'
+
 
 
 export const router=createBrowserRouter([
@@ -64,7 +67,10 @@ export const router=createBrowserRouter([
                              path: "tours",
                              element: <ToursPage/>
                          },  
-
+                      {
+                             path: "booking-details",
+                             element: <BookingDetails/>
+                         },  
 
 
            
@@ -78,6 +84,7 @@ export const router=createBrowserRouter([
                              path: "confirm/:id",
                              element: <ConformationPage/>
                          }, 
+                          
 
 
            
@@ -130,12 +137,16 @@ export const router=createBrowserRouter([
                 element: < AdminBusPassengers/>
             },          
 {
-                path: "AdminExpense",
+                path: "AdminExpense/:id",
                 element: < AdminExpense/>
             },  
             {
                 path:"postcreate",
                 element:<PostCreator/>
+            },
+            {
+                path:"packfolder",
+                element:<FolderStructure/>
             }
 
            

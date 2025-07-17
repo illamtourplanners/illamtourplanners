@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { motion } from "framer-motion";
 import { BsCheckCircle } from "react-icons/bs";
@@ -16,7 +16,7 @@ const CheckoutPage = () => {
   const [invoiceNo] = useState(`INV-${Math.floor(Math.random() * 1000000)}`);
   const [isCopied, setIsCopied] = useState(false);
 const [previewImage, setPreviewImage] = useState(null);
-
+const [paymentMethod] = useState('razorpay'); 
 
 
   const totalAmount = advancePayment
@@ -41,7 +41,25 @@ const [previewImage, setPreviewImage] = useState(null);
 
 
 // Inside your component
+ const formData = {
+    name: name,
+    phone: '9876543210',
+    email: 'test@example.com'
+  };
 
+  // const totalDue = totalPrice;
+  // const cartId = "67f119b215000dc3d4d0a141";
+
+  const loadRazorpayScript = () => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  };
+
+  useEffect(() => {
+    loadRazorpayScript();
+  }, []);
 
 const onFormSubmit = async (data) => {
   setIsSubmitting(true);
@@ -57,7 +75,7 @@ const onFormSubmit = async (data) => {
     }));
 
     const formattedDetails = {
-      packageNumber:packageDetails.packageNumber,
+      packageNumber: packageDetails.packageNumber,
       packageName: packageDetails.packageName,
       packageDate: packageDetails.date,
       packageDay: packageDetails.day,
@@ -67,36 +85,70 @@ const onFormSubmit = async (data) => {
     };
 
     const name = people[0].name;
+    const email = people[0].email;
 
-    // Prepare FormData
-    const formData = new FormData();
-    formData.append("image", data.image[0]); // data.image is an array
-    formData.append("packageName", packageDetails.packageName);
-    formData.append("packageDate", packageDetails.date);
-    formData.append("packageDetails", JSON.stringify(formattedDetails));
-    formData.append("customers", JSON.stringify(formattedCustomers));
-    formData.append("amount", totalAmount);
-    formData.append("name", name);
-    formData.append("totalPerPerson", amount);
-    formData.append("advancePayment", advancePayment);
-
-    const res = await axiosInstance.post("/checkout/create", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    // Create order on backend
+    const orderRes = await axiosInstance.post("/checkout/create", {
+      amount: totalAmount,
+      currency: "INR",
+      receipt: invoiceNo,
     });
-console.log(res);
 
-    if (res.data.success === true) {
-      setTimeout(() => {
-        navigate(`/confirm/${res.data.transactionId}`);
-      }, 3000);
-    }
+    const { order } = orderRes.data;
+
+    // Open Razorpay checkout
+    const options = {
+      key: "rzp_live_S4sfG2kF8m7k4t", // Replace with your Razorpay Key ID
+      amount: order.amount,
+      currency: order.currency,
+      name: "Vaidehi Holidays",
+      description: `Booking for ${packageDetails.packageName}`,
+      image: "https://illamlogo.png", // Optional
+      order_id: order.id,
+      handler: async function (response) {
+        const formData = new FormData();
+
+        formData.append("packageName", packageDetails.packageName);
+        formData.append("packageDate", packageDetails.date);
+        formData.append("packageDetails", JSON.stringify(formattedDetails));
+        formData.append("customers", JSON.stringify(formattedCustomers));
+        formData.append("amount", totalAmount);
+        formData.append("name", name);
+        formData.append("totalPerPerson", amount);
+        formData.append("advancePayment", advancePayment);
+        formData.append("razorpay_payment_id", response.razorpay_payment_id);
+        formData.append("razorpay_order_id", response.razorpay_order_id);
+        formData.append("razorpay_signature", response.razorpay_signature);
+
+     
+        const res = await axiosInstance.post("/checkout/confirm", formData);
+
+        if (res.data.success === true) {
+          navigate(`/confirm/${res.data.transactionId}`);
+        } else {
+          alert("Booking failed");
+        }
+      },
+      prefill: {
+        name,
+        email,
+        contact: people[0]?.phone,
+      },
+      theme: {
+        color: "#0f766e",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   } catch (error) {
-    console.error("Checkout error:", error);
-    alert("Error: " + (error.response?.data?.message || error.message));
+    console.error("Razorpay Checkout Error:", error);
+    alert("Something went wrong. Try again.");
   } finally {
     setIsSubmitting(false);
   }
 };
+
 
 
 
@@ -176,208 +228,102 @@ console.log(res);
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit(onFormSubmit)}>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white border border-gray-200 rounded-xl p-6">
-                      <h3 className="font-bold text-gray-800 text-lg mb-4">Pay via UPI</h3>
-                      <div className="flex flex-col items-center text-center">
-                        <div className="mb-6 p-4 bg-white rounded-lg border-2 border-dashed border-blue-200">
-                          <img
-                          id="qrImage"
-                            src={`https://quickchart.io/qr?text=${encodeURIComponent(upiLink)}`}
-                            alt="UPI QR Code"
-                            className="w-48 h-48 mx-auto"
-                          />
+             <div>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 space-y-6">
+                      <div className="bg-white border border-gray-200 rounded-xl p-6">
+                        <h3 className="font-bold text-gray-800 text-lg mb-6">Payment Method</h3>
+                        
+                        {/* Payment Method Selection - Only Razorpay */}
+                        <div className="flex flex-col gap-4 mb-8">
+                          <label className="flex items-center gap-3 p-4 border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
+                            <input
+                              type="radio"
+                              name="paymentMethod"
+                              value="razorpay"
+                              checked={paymentMethod === 'razorpay'}
+                              readOnly
+                              className="h-5 w-5 text-blue-600"
+                            />
+                            <div className="flex-1">
+                              <span className="font-medium text-gray-700">Secure Online Payment</span>
+                              <p className="text-sm text-gray-500 mt-1">
+                                Credit/Debit Card, Net Banking, UPI, Wallet
+                              </p>
+                            </div>
+                          </label>
                         </div>
 
-                        <p className="text-gray-700 mb-2">Scan this QR code with any UPI app to complete your payment</p>
+                        {/* Razorpay Payment Section */}
+                       
 
-                        {/* <button
-                          onClick={copyToClipboard}
-                          type="button"
-                          className="text-blue-600 hover:underline flex items-center gap-1 mb-4"
-                        >
-                          <FiCopy />
-                          {isCopied ? "Copied!" : "Copy UPI Link"}
-                        </button> */}
-                        <button
-  onClick={() => {
-    const image = document.getElementById("qrImage");
-    const link = document.createElement("a");
-    link.href = image.src;
-    link.download = "upi-qr-code.png";
-    link.click();
-  }}
-  className="mt-4 px-4 py-2 bg-blue-100 text-blue-800 font-semibold rounded hover:bg-blue-200 text-sm"
->
-  ⬇️ Download QR Code
-</button>
+                      
 
-
-                    <div className="w-full max-w-md">
-  <label className="block text-sm font-medium text-gray-700 mb-2">
-    Upload payment screenshot:
-  </label>
-  
-  {/* Custom file upload area */}
-  <div 
-    className={`
-      relative border-2 border-dashed rounded-lg p-4 text-center cursor-pointer
-      hover:border-blue-500 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200
-      ${previewImage ? 'border-blue-500' : 'border-gray-300'}
-      transition-colors duration-200
-    `}
-  >
-    <input
-      type="file"
-      accept="image/*"
-      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-      {...register("image", {
-        required: "Payment screenshot is required.",
-        onChange: (e) => {
-          const file = e.target.files[0];
-          if (file) setPreviewImage(URL.createObjectURL(file));
-        }
-      })}
-    />
-    
-    <div className="flex flex-col items-center justify-center space-y-2">
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        className="h-10 w-10 text-gray-400" 
-        fill="none" 
-        viewBox="0 0 24 24" 
-        stroke="currentColor"
-      >
-        <path 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
-          strokeWidth={2} 
-          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
-        />
-      </svg>
-      
-      <div className="text-sm text-gray-600">
-        <p className="font-medium">
-          <span className="text-blue-600 hover:text-blue-500 underline">Click to upload</span> 
-          {' '}or drag and drop
-        </p>
-        <p className="text-xs mt-1">PNG, JPG, or JPEG (Max 5MB)</p>
-      </div>
-    </div>
-  </div>
-  {previewImage && (
-    <img
-      src={previewImage}
-      alt="Preview"
-      className="mt-4 rounded-lg w-48 mx-auto border"
-    />
-  )}
-
-  {errors.image && (
-    <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
-  )}
-</div>
-
-
-                        <div className="mt-6 p-6 bg-gray-100 border border-gray-300 rounded-lg shadow-sm text-sm text-gray-800 w-full max-w-2xl mx-auto">
-                          <h4 className="text-base font-semibold mb-4 text-blue-700">📝 Important Payment Instructions:</h4>
-                          <ul className="space-y-2 list-decimal list-inside text-left">
-                            <li>
-                              First, complete your payment by scanning the above <strong>UPI QR Code</strong>.
-                            </li>
-                            <li>
-                              Then <strong>upload the screenshot</strong> of payment confirmation.<br />
-                              <span className="text-red-600 font-medium">
-                                Must show: Date, Time, Amount, Account Name, and Transaction ID.
-                              </span>
-                            </li>
-                            <li>
-                              Contact support if needed: 📞 <strong>9400440686</strong> or 📞 <strong>8885214635</strong>
-                            </li>
-                            <li>
-                              You will be notified within 12 hours via <strong>SMS or Email</strong>.
-                            </li>
-                            <li>
-                              Save this page or take a screenshot.
-                            </li>
-                          </ul>
-                        </div>
-
-                        <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200 w-full max-w-md">
-                          <div className="flex items-start gap-3">
-                            <span className="text-yellow-500">⚠️</span>
-                            <p className="text-yellow-700 text-sm">
-                              Please complete payment within 15 minutes to confirm your booking.
-                            </p>
-                          </div>
-                        </div>
+                       
                       </div>
                     </div>
-                  </div>
 
-                  <div className="lg:col-span-1">
-                    <div className="bg-white border border-gray-200 rounded-xl p-6 sticky top-6">
-                      <h3 className="font-bold text-gray-800 text-lg mb-6 pb-3 border-b border-gray-100">
-                        Booking Summary
-                      </h3>
+                    <div className="lg:col-span-1">
+                      <div className="bg-white border border-gray-200 rounded-xl p-6 sticky top-6">
+                        <h3 className="font-bold text-gray-800 text-lg mb-6 pb-3 border-b border-gray-100">
+                          Booking Summary
+                        </h3>
 
-                      <div className="space-y-4 text-sm">
-                        <div className="font-semibold text-gray-800">{packageDetails.packageName}</div>
+                        <div className="space-y-4 text-sm">
+                          <div className="font-semibold text-gray-800">{packageDetails.packageName}</div>
 
-                        <div className="flex justify-between">
-                          <span>Destination</span>
-                          <span>{packageDetails.destination}</span>
+                          <div className="flex justify-between">
+                            <span>Destination</span>
+                            <span>{packageDetails.destination}</span>
+                          </div>
+
+                          <div className="flex justify-between">
+                            <span>Travelers</span>
+                            <span>{packageDetails.person}</span>
+                          </div>
+
+                          <div className="flex justify-between">
+                            <span>Days</span>
+                            <span>{packageDetails.day}</span>
+                          </div>
+
+                          <hr />
+
+                          <div className="flex justify-between">
+                            <span>Package Price Per Person</span>
+                            <span>₹{amount}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Advance Payment for {packageDetails.person} peoples</span>
+                            <span>₹{advancePayment}</span>
+                          </div>
+                          
+
+                          <div className="flex justify-between font-bold text-blue-700 text-lg pt-3">
+                            <span>Pay Now</span>
+                            <span>₹{totalAmount}</span>
+                          </div>
+
+                          <hr />
+
+                          <div className="text-sm">
+                            <span className="text-gray-600">Invoice No:</span> {invoiceNo}
+                          </div>
+
+                          <button
+                            onClick={onFormSubmit}
+                            disabled={isSubmitting}
+                            className={`w-full mt-4 py-3 rounded-xl font-bold text-white ${
+                              isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-purple-600 hover:bg-purple-700"
+                            } transition`}
+                          >
+                            {isSubmitting ? "Processing..." : "Proceed to Payment"}
+                          </button>
                         </div>
-
-                        <div className="flex justify-between">
-                          <span>Travelers</span>
-                          <span>{packageDetails.person}</span>
-                        </div>
-
-                        <div className="flex justify-between">
-                          <span>Days</span>
-                          <span>{packageDetails.day}</span>
-                        </div>
-
-                        <hr />
-
-                        <div className="flex justify-between">
-                          <span>Package Price Per Person</span>
-                          <span>₹{amount}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Advance Payment for {packageDetails.person} peoples</span>
-                          <span>₹{advancePayment}</span>
-                        </div>
-                        
-
-                        <div className="flex justify-between font-bold text-blue-700 text-lg pt-3">
-                          <span>Pay Now</span>
-                          <span>₹{totalAmount}</span>
-                        </div>
-
-                        <hr />
-
-                        <div className="text-sm">
-                          <span className="text-gray-600">Invoice No:</span> {invoiceNo}
-                        </div>
-
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className={`w-full mt-4 py-3 rounded-xl font-bold text-white ${
-                            isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-                          } transition`}
-                        >
-                          {isSubmitting ? "Processing..." : "Confirm Booking"}
-                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </form>
             )}
 
             <div className="flex justify-start mt-10">
