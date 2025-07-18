@@ -99,7 +99,7 @@ const sendConformation=async()=>{
   console.log("df");
   setLoading(true);
  try {
-  const response = await axiosInstance.post("/checkout/confirm", {
+  const response = await axiosInstance.post("/checkout/statusConfirm", {
    bookingId: id,
   transactionId: bookings?.transactionId,
   customerEmail: bookings?.customers?.[0].email,

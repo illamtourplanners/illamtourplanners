@@ -420,7 +420,7 @@ const handleDelete = async (postId) => {
                   <span className="ml-2 text-sm text-gray-500">Posted by You</span>
                 </div>
                <span className="text-sm text-gray-500">
-  {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+  {formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}
 </span>
 
               </div>

@@ -77,6 +77,38 @@ const nav = (id) => {
     navigate(`/admin/passengers/${id}`);
   };
 
+
+const handleToggleStatus = async (id, currentStatus) => {
+  try {
+    const newStatus = currentStatus === "Activate" ? "Deactivate" : "Activate";
+
+    const response = await axiosInstance.put(`/package/status`, {
+      id,
+      status: newStatus
+    });
+
+    if (response.data.success) {
+      toast.success(`Package marked as ${newStatus}`);
+      setPackages(prev =>
+        prev.map(pkg =>
+          pkg._id === id ? { ...pkg, status: newStatus } : pkg
+        )
+      );
+    } else {
+      toast.error("Failed to update status");
+    }
+  } catch (err) {
+    console.error("Error toggling package status:", err);
+    toast.error("Something went wrong");
+  }
+};
+
+
+
+
+
+
+
   // Pagination controls
   const renderPagination = () => {
     if (totalPages <= 1) return null;
@@ -195,6 +227,7 @@ const nav = (id) => {
                       <th className="hidden sm:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
                       <th className="hidden md:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pickup</th>
                       <th className="hidden lg:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dropoff</th>
+                      
                       <th className="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
@@ -232,6 +265,22 @@ const nav = (id) => {
                                 </svg>
                                 View
                               </button>
+<button
+  onClick={() => handleToggleStatus(pkg._id, pkg.status)}
+  className={`transition flex items-center ${
+    pkg.status === "Activate"
+      ? "text-yellow-600 hover:text-yellow-800"
+      : "text-green-600 hover:text-green-800"
+  }`}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+  </svg>
+  {pkg.status === "Activate" ? "Deactivate" : "Activate"}
+</button>
+
+
+
                               <button 
                                 onClick={() => handleDelete(pkg._id)}
                                 className="text-red-600 hover:text-red-900 transition flex items-center"

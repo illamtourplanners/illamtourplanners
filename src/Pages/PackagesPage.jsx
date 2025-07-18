@@ -33,7 +33,7 @@ export const PackagesPage = () => {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const response = await axiosInstance.get("/package/getall");
+        const response = await axiosInstance.get("/package/dataforhome");
         setPackages(response.data.data);
       } catch (error) {
         console.error("Error fetching packages:", error);
@@ -268,7 +268,7 @@ export const PackagesPage = () => {
                         </div>
                         <div className="text-right">
                           <div className="text-3xl font-bold text-white drop-shadow-lg">
-                            ${pkg.PricePerPerson}
+                            ₹{pkg.PricePerPerson}
                           </div>
                           <div className="text-white/80 text-sm">per person</div>
                         </div>

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { axiosInstance } from '../config/axiosInstance';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Heart, Share2, MapPin, Calendar, Users } from 'lucide-react';
+import { Camera, Heart, Share2, MapPin, Calendar, Users ,Download } from 'lucide-react';
 
 export default function TravelGallery() {
   const [posts, setPosts] = useState([]);
@@ -300,7 +300,20 @@ const downloadImageAsPng = (url, filename = 'download.png') => {
                             }}
                             loading="lazy"
                           />
-                          
+          
+  <div className="absolute top-4 left-4 z-10">
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        downloadImageAsPng(getImageSrc(src), `travel-photo-${imageIndex + 1}.png`);
+      }}
+      className="bg-white/30 hover:bg-white/60 text-black px-3 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1"
+    >
+      <Download className="w-4 h-4" />
+      Download
+    </button>
+  </div>
+
                           {/* Overlay */}
                           {/* Overlay */}
 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
@@ -319,15 +332,7 @@ const downloadImageAsPng = (url, filename = 'download.png') => {
   </div>
 
   {/* Download Button */}
- <button
-  onClick={(e) => {
-    e.stopPropagation(); // Prevent modal
-    downloadImageAsPng(getImageSrc(src), `travel-photo-${imageIndex + 1}.png`);
-  }}
-  className="absolute top-4 left-4 bg-white/30 hover:bg-white/50 text-black px-3 py-1 rounded-full text-xs font-medium transition-all"
->
-  Download PNG
-</button>
+
 
 </div>
 
