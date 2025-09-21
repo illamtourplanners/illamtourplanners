@@ -35,6 +35,7 @@ export const PackagesPage = () => {
       try {
         const response = await axiosInstance.get("/package/dataforhome");
         setPackages(response.data.data);
+        
       } catch (error) {
         console.error("Error fetching packages:", error);
       } finally {
@@ -202,6 +203,23 @@ export const PackagesPage = () => {
             </motion.div>
           </div>
 
+{packages.length === 0 ? (
+<div className="flex flex-col items-center justify-center py-20">
+        <img 
+          src="https://miro.medium.com/0*B02q8JGPAndcyOiN.jpg" 
+          alt="Travel illustration" 
+          className=""
+        />
+        <h3 className="text-2xl md:text-3xl font-bold text-gray-700 mb-4">
+          We’re Creating Something Wonderful ✨
+        </h3>
+        <p className="text-lg text-gray-500 max-w-xl text-center leading-relaxed">
+          Our journey packages are being crafted with love and care.  
+          Stay tuned — your next unforgettable adventure is on the way!
+        </p>
+      </div>
+
+ ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 xl:gap-10">
             <AnimatePresence>
               {packages.map((pkg, index) => (
@@ -348,10 +366,7 @@ export const PackagesPage = () => {
                           <Calendar className="w-4 h-4 text-emerald-500" />
                           <span>Flexible Dates</span>
                         </div>
-                        <div className="flex items-center space-x-1">
-                          <Award className="w-4 h-4 text-amber-500" />
-                          <span>Award Winner</span>
-                        </div>
+                       
                       </div>
                       <motion.button 
                         whileHover={{ scale: 1.05 }}
@@ -367,8 +382,22 @@ export const PackagesPage = () => {
               ))}
             </AnimatePresence>
           </div>
+ )}
         </div>
       </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       {/* Testimonials Section */}
       <section className="py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-emerald-900 relative overflow-hidden">

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bell, Compass, MapPin, Phone, Heart,Droplet  } from 'lucide-react';
 export const HomePage = () => {
  
-
+const [video,setVideo]=useState([])
   const testimonials = [
     {
       id: 1,
@@ -31,11 +31,69 @@ export const HomePage = () => {
     }
   ];
 
+
+const fetchData=async(req,res)=>{
+ const videos= await axiosInstance.get("/tour/get-video")
+ setVideo(videos.data.data);
+}
+useEffect(()=>{
+  fetchData()
+},[])
+ 
  
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <HeroSection/>
+
+
+
+{/* Ads Video Section */}
+{video.length > 0 && (
+  <section className="py-20 px-4 bg-gray-100">
+    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10">
+      
+      {/* Left: Description */}
+      <div className="md:w-1/2 w-full">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          {video[0].title}
+        </h2>
+        <p className="text-gray-600 mb-6 text-base md:text-lg leading-relaxed">
+         {video[0].description}
+         </p>
+        <a href="/package">
+          <button className="bg-emerald-600 text-white font-semibold py-3 px-6 md:px-8 rounded-full shadow-lg hover:bg-emerald-700 transition-all duration-300">
+            Explore Packages
+          </button>
+        </a>
+      </div>
+
+      {/* Right: Video */}
+      {video.map((vid, index) => (
+        <div key={index} className="md:w-1/2 w-full">
+          <div className="relative w-full pt-[100%] rounded-xl overflow-hidden ">
+            <video
+              controls
+              autoPlay
+              loop
+               playsInline
+              className="absolute top-0 left-0 w-96 h-full object-cover rounded-xl"
+              poster={vid.video}
+            >
+              <source src={vid.video} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      ))}
+
+    </div>
+  </section>
+)}
+
+
+
+
 
       {/* Welcome Section */}
 <section className="py-20 px-4 bg-gradient-to-br from-emerald-50 via-white to-teal-50">
