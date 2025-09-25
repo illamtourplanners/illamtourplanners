@@ -98,7 +98,7 @@ const onFormSubmit = async (data) => {
 
     // Open Razorpay checkout
     const options = {
-      key: "rzp_live_S4sfG2kF8m7k4t", // Replace with your Razorpay Key ID
+      key: "rzp_live_RLldDH0xfLJKuC", // Replace with your Razorpay Key ID
       amount: order.amount,
       currency: order.currency,
       name: "Vaidehi Holidays",
